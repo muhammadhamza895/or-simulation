@@ -1,0 +1,110 @@
+*{
+    font-family: 'Times New Roman', Times, serif;
+    background-color: bisque;
+}
+
+.container-1{
+    display: flex;
+    justify-content: center;
+}
+
+.heading{
+    text-align: center;
+}
+
+.div-heading{
+    display: flex;
+    justify-content: center;
+}
+
+.container-1 input{
+    width: 120%;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.container-1 select{
+    width: 120%;
+    height: 25px;
+
+}
+
+#calculate-btn{
+    width: 170px;
+    height: 30px;
+    background-color: brown;
+    border-radius: 10px;
+    color: white;
+    font-size: large;
+}
+
+#calculate-btn:hover  {
+    background-color: aqua;
+    color: black;
+}
+
+.container-table{
+    display: flex;
+    justify-content: center;
+}
+
+.simulation_table th ,td{
+   
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px;
+}
+
+#add-value{
+    width: 170px;
+    height: 30px;
+    background-color: brown;
+    border-radius: 10px;
+    color: white;
+    font-size: large;
+}
+
+#service_min{
+    display: none;
+}
+
+#service_max{
+    display: none;
+}
+
+#num_servers{
+    display: none;
+}
+
+.sim-table{
+    border-collapse: collapse;
+    
+}
+
+.sim-table th{
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#avg_interarrival{
+    display: none;
+
+}
+
+#avg_service{
+    display: none;
+}
+
+#var_arrival{
+    display: none;
+}
+
+#var_service{
+    display: none;
+}
+
+.Calculate{
+    display: flex;
+    justify-content: center;
+}
+

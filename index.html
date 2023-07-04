@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queuing Simulation & Model </title>
+    <link rel="stylesheet" href="./styles.css" type="text/css">
+
+</head>
+
+<body>
+
+    <div class="container-1">
+
+        <div class="div-heading">
+            <h1 class="heading">Queueing Simulation</h1>
+        </div>
+    </div>
+
+    <div class="container-1">
+
+        <div>
+
+            <label>Type of Queuing Model </label> <br />
+            <select id="queuing-model" onchange="Addvalues()">
+                <option value="">--Select any distribution--</option>
+                <option value="M/M/1"> M/M/1</option>
+                <option value="M/M/2"> M/M/2</option>
+                <option value="M/G/1"> M/G/1</option>
+                <option value="M/G/2"> M/G/2</option>
+                <option value="G/G/1"> G/G/1</option>
+                <option value="G/G/2"> G/G/2</option>
+            </select>
+
+            <br /> <br />
+
+            <input type="text" placeholder="Mean of Arrival Distribution" id="mean-arrival"> <br /> <br />
+
+        
+            <input type="number" placeholder="Mean of service" id="service-mean"> <br /><br />
+           
+
+            <!-- <input type="number" placeholder="Number of observations" id="observations"> <br /> <br /> -->
+
+        
+            <input type="text" placeholder="Service Minimum" id="service_min"> 
+            <div class="space">
+                <br /> <br />
+            </div>
+
+            <input type="text" placeholder="Service Maximum" id="service_max"> 
+            <div class="space">
+                <br /> <br />
+            </div>
+
+            <!-- <input type="text" placeholder="Number of servers" id="num_servers"> 
+            <div class="space">
+                <br /> <br />
+            </div> -->
+
+            <input type="number"  placeholder="Average Inter-arrival time"   id="avg_interarrival" >
+            <div class="space">
+                <br /> <br />
+            </div>
+
+            <input type="number"  placeholder="Average Service time"   id="avg_service" >
+            <div class="space">
+                <br /> <br />
+            </div>
+
+            <input type="number"  placeholder="Variance of Arrival time"   id="var_arrival" >
+            <div class="space">
+                <br /> <br />
+            </div>
+
+            <input type="number"  placeholder="Variance of Service time"   id="var_service" >
+            <br /> <br />
+
+            <div class="container-1">
+                <button id="calculate-btn" onclick="Calculate()">Calculate</button>
+            </div>
+
+            <br /> <br />
+
+            
+        </div>
+
+    </div>
+
+    <br /> <br />
+
+    <div class="container-table">
+        <table id="simulation_table" class="sim-table">
+            <!-- The table headers -->
+            <tr>
+                <th>Serial Number</th>
+                <th>Cp Lookup</th>
+                <th>Cp       </th>
+                <th>Avg Time Between Arrival</th>
+                <th>Inter Arrival</th>
+                <th>Arrival Time</th>
+                <th>Service Time</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Turnaround Time</th>
+                <th>Wait Time</th>
+                <th>Response Time</th>
+                <th>Server</th>
+
+            </tr>
+        </table>
+
+    </div>
+
+    <br /> <br />
+    
+    <div class="Calculate">
+        <div>
+           <span><b>Server Utilization</b></span>  <p id="server-utlization"></p>
+           <span><b>Average Turn around time</b></span> <p id="avg-turnaround"></p>
+           <span><b>Average Wait time</b></span>  <p id="avg-wait"></p>
+            <p id="avg-response"></p>
+            
+
+        </div>
+    </div>
+
+
+    <script src="./index.js"></script>
+
+</body>
+
+</html>
