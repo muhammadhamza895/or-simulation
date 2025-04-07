@@ -86,14 +86,14 @@ function cpCalcUniform(mean, variance) {
 }
 
 function setSelectedDistributionValue(distribution) {
-    const selectElement = document.getElementById('distribution-display');
-    selectElement.innerHTML = distribution
+    const selectElement = document.getElementById('queuing-model');
+    selectElement.value = distribution
+    Addvalues()
 }
 
 function Addvalues(value) {
-    setSelectedDistributionValue(value)
-    // var queuingModel = document.getElementById("queuing-model").value;
-    var queuingModel = value || 'M/M/1';
+    // setSelectedDistributionValue(value)
+    var queuingModel = document.getElementById("queuing-model").value;
     console.log({queuingModel})
     var serviceMinInput = document.getElementById('service_min');
     var serviceMaxInput = document.getElementById('service_max');
