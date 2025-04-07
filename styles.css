@@ -1,40 +1,40 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 
-*{
+* {
     /* font-family: 'Times New Roman', Times, serif; */
     color: #000000;
     box-sizing: border-box;
 }
 
 body {
-    background: #4ECDC4;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #556270, #4ECDC4);  
+    background: #4ECDC4;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #556270, #4ECDC4);
     background: linear-gradient(to right, #556270, #4ECDC4);
 }
 
-.container-1{
+.container-1 {
     display: flex;
     justify-content: center;
 }
 
-.heading{
+.heading {
     text-align: center;
 }
 
-.div-heading{
+.div-heading {
     display: flex;
     justify-content: center;
 }
 
-.container-1 input{
+.container-1 input {
     width: 120%;
     height: 25px;
     border-radius: 5px;
 }
 
-.container-1 select{
+.container-1 select {
     width: 120%;
     height: 25px;
 
@@ -54,19 +54,20 @@ body {
     color: black;
 } */
 
-.container-table{
+.container-table {
     display: flex;
     justify-content: center;
 }
 
-.simulation_table th ,td{
-   
+.simulation_table th,
+td {
+
     border: 1px solid black;
     text-align: center;
     padding: 5px;
 }
 
-#add-value{
+#add-value {
     width: 170px;
     height: 30px;
     background-color: brown;
@@ -75,46 +76,46 @@ body {
     font-size: large;
 }
 
-#service_min{
+#service_min {
     display: none;
 }
 
-#service_max{
+#service_max {
     display: none;
 }
 
-#num_servers{
+#num_servers {
     display: none;
 }
 
-.sim-table{
+.sim-table {
     border-collapse: collapse;
-    
+
 }
 
-.sim-table th{
+.sim-table th {
     border: 1px solid black;
     padding: 5px;
 }
 
-#avg_interarrival{
+#avg_interarrival {
     display: none;
 
 }
 
-#avg_service{
+#avg_service {
     display: none;
 }
 
-#var_arrival{
+#var_arrival {
     display: none;
 }
 
-#var_service{
+#var_service {
     display: none;
 }
 
-.Calculate{
+.Calculate {
     display: flex;
     justify-content: center;
 }
@@ -147,7 +148,7 @@ body {
 }
 
 
-.slected-queuing-model{
+.slected-queuing-model {
     pointer-events: none;
     width: 50px !important;
 }
@@ -158,35 +159,7 @@ body {
     max-width: 300px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.charts-container {
+    display: grid;
+    grid-template-columns: auto auto;
+}

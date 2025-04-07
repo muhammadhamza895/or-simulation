@@ -1,3 +1,8 @@
+google.charts.load('current', {
+    packages: ['corechart', 'line']
+});
+
+
 function fact(num) {
     if (num < 0) {
         return -1;
@@ -94,7 +99,7 @@ function setSelectedDistributionValue(distribution) {
 function Addvalues(value) {
     // setSelectedDistributionValue(value)
     var queuingModel = document.getElementById("queuing-model").value;
-    console.log({queuingModel})
+    console.log({ queuingModel })
     var serviceMinInput = document.getElementById('service_min');
     var serviceMaxInput = document.getElementById('service_max');
     var serviceMean = document.getElementById('service-mean');
@@ -132,6 +137,49 @@ function Addvalues(value) {
         varService.style.display = "block";
     }
 }
+
+const generateArrivalChart = (arrivalTimes) => {
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var yValues = arrivalTimes
+        var xValues = Array.from(Array(yValues.length).keys())
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Customer');
+        data.addColumn('number', 'Arrival Time');
+
+        var chartData = xValues.map((x, index) => [x, yValues[index]]);
+        data.addRows(chartData);
+
+        var options = {
+            title: 'Customer Arrival Time',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            height: 500,
+            chartArea: {
+                top: 30,
+                left: 40,
+                bottom: 50,
+                right: 20
+            },
+            backgroundColor: '#f4f4f4',
+            hAxis: {
+                title: 'Customer'
+            },
+            vAxis: {
+                title: 'Arrival Time'
+            },
+        };
+
+
+
+        lineChartContainer = document.getElementById('linechart')
+        var chart = new google.visualization.LineChart(lineChartContainer);
+        chart.draw(data, options);
+    }
+}
+
 
 
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
@@ -332,6 +380,8 @@ function generate_MM1_Table() {
     function roundOff(value) {
         return Math.round(value);
     }
+
+    generateArrivalChart(arrivalarray)
 }
 
 // ------------------------------------ M / M / 2 MODEL  ---------------------------------------------- //
@@ -481,39 +531,39 @@ function generate_MM2_Table() {
 
 
     let serverutil1 = 0;
-    let serverutil2 = 0;  
-    let serverutilization1 = [] ;
-            let serverutilization2 = [] ;
-            for (let i = 0; i < server.length; i++) {
-                  if (server[i]== 1) {
-                       serverutilization1.push(i);
-                  }
-                  else{
-                    serverutilization2.push(i);
-                  }
-            }
-            let idle = 0
-            for (let k = 0; k < serverutilization1.length-1; k++) {
-                // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
-                if(starttime[serverutilization1[k+1]] > endtime[serverutilization1[k]])
-                     idle = idle + (starttime[serverutilization1[k+1]] - endtime[serverutilization1[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil1 = idle/previousEndTimes[0]
-            console.log(  "Server utilized 1 "+ serverutil1)
+    let serverutil2 = 0;
+    let serverutilization1 = [];
+    let serverutilization2 = [];
+    for (let i = 0; i < server.length; i++) {
+        if (server[i] == 1) {
+            serverutilization1.push(i);
+        }
+        else {
+            serverutilization2.push(i);
+        }
+    }
+    let idle = 0
+    for (let k = 0; k < serverutilization1.length - 1; k++) {
+        // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
+        if (starttime[serverutilization1[k + 1]] > endtime[serverutilization1[k]])
+            idle = idle + (starttime[serverutilization1[k + 1]] - endtime[serverutilization1[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil1 = idle / previousEndTimes[0]
+    console.log("Server utilized 1 " + serverutil1)
 
 
-            idle = 0
-            for (let k = 0; k < serverutilization2.length-1; k++) {
-                // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
-                if(starttime[serverutilization2[k+1]] > endtime[serverutilization2[k]])
-                     idle = idle + (starttime[serverutilization2[k+1]] - endtime[serverutilization2[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil2 = idle/previousEndTimes[0]
-            console.log( "Server utilized  2  "+ serverutil2)
+    idle = 0
+    for (let k = 0; k < serverutilization2.length - 1; k++) {
+        // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
+        if (starttime[serverutilization2[k + 1]] > endtime[serverutilization2[k]])
+            idle = idle + (starttime[serverutilization2[k + 1]] - endtime[serverutilization2[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil2 = idle / previousEndTimes[0]
+    console.log("Server utilized  2  " + serverutil2)
 
     // console.log(serverutilization)
 
@@ -731,7 +781,7 @@ function generate_MG2_Table() {
     const serviceMin = parseFloat(document.getElementById('service_min').value);
     const serviceMax = parseFloat(document.getElementById('service_max').value);
     const numServers = 2
-   
+
     let cparray = []
     let cplookuparray = []
     let interarrival = []
@@ -794,7 +844,7 @@ function generate_MG2_Table() {
         const avgArrival = i;
         const interArrivalRate = interarrival[i]
         currentTime = arrivalarray[i]
-        
+
         const serviceTime = uniformRandom(serviceMin, serviceMax);
         const startTimes = new Array(numServers);
 
@@ -872,38 +922,38 @@ function generate_MG2_Table() {
 
     let serverutil1 = 0;
     let serverutil2 = 0;
-    let serverutilization1 = [] ;
-            let serverutilization2 = [] ;
-            for (let i = 0; i < server.length; i++) {
-                  if (server[i]== 1) {
-                       serverutilization1.push(i);
-                  }
-                  else{
-                    serverutilization2.push(i);
-                  }
-            }
-            let idle = 0
-            for (let k = 0; k < serverutilization1.length-1; k++) {
-                // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
-                if(starttime[serverutilization1[k+1]] > endtime[serverutilization1[k]])
-                     idle = idle + (starttime[serverutilization1[k+1]] - endtime[serverutilization1[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil1 = idle/previousEndTimes[0]
-            console.log(  "Server utilized 1 "+ serverutil1)
+    let serverutilization1 = [];
+    let serverutilization2 = [];
+    for (let i = 0; i < server.length; i++) {
+        if (server[i] == 1) {
+            serverutilization1.push(i);
+        }
+        else {
+            serverutilization2.push(i);
+        }
+    }
+    let idle = 0
+    for (let k = 0; k < serverutilization1.length - 1; k++) {
+        // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
+        if (starttime[serverutilization1[k + 1]] > endtime[serverutilization1[k]])
+            idle = idle + (starttime[serverutilization1[k + 1]] - endtime[serverutilization1[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil1 = idle / previousEndTimes[0]
+    console.log("Server utilized 1 " + serverutil1)
 
 
-            idle = 0
-            for (let k = 0; k < serverutilization2.length-1; k++) {
-                // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
-                if(starttime[serverutilization2[k+1]] > endtime[serverutilization2[k]])
-                     idle = idle + (starttime[serverutilization2[k+1]] - endtime[serverutilization2[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil2 = idle/previousEndTimes[0]
-            console.log( "Server utilized  2  "+ serverutil2)
+    idle = 0
+    for (let k = 0; k < serverutilization2.length - 1; k++) {
+        // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
+        if (starttime[serverutilization2[k + 1]] > endtime[serverutilization2[k]])
+            idle = idle + (starttime[serverutilization2[k + 1]] - endtime[serverutilization2[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil2 = idle / previousEndTimes[0]
+    console.log("Server utilized  2  " + serverutil2)
 
     const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
@@ -935,7 +985,7 @@ function generate_GG1_Table() {
     const avgService = parseFloat(document.getElementById('avg_service').value);
     const varArrival = parseFloat(document.getElementById('var_arrival').value);
     const varService = parseFloat(document.getElementById('var_service').value);
-    
+
     const table = document.getElementById('simulation_table');
     // let currentTime = 0;
     let previousEndTime = 0;
@@ -979,10 +1029,10 @@ function generate_GG1_Table() {
     for (let i = 0; i < cparray.length; i++) {
         currentTime = currentTime + interarrival[i]
         arrivalarray[i] = currentTime;
-        
+
     }
 
-    
+
     while (table.rows.length > 1) {
         table.deleteRow(1);
     }
@@ -1117,7 +1167,7 @@ function generate_GG2_Table() {
     const avgService = parseFloat(document.getElementById('avg_service').value);
     const varArrival = parseFloat(document.getElementById('var_arrival').value);
     const varService = parseFloat(document.getElementById('var_service').value);
-   
+
     const numServers = 2
 
     let arraymain = cpCalcUniform(avgInterarrival, varArrival)
@@ -1159,10 +1209,10 @@ function generate_GG2_Table() {
     for (let i = 0; i < cparray.length; i++) {
         currentTime = currentTime + interarrival[i]
         arrivalarray[i] = currentTime;
-       
+
     }
 
-    let server =[]; 
+    let server = [];
 
 
     const table = document.getElementById('simulation_table');
@@ -1249,41 +1299,41 @@ function generate_GG2_Table() {
 
     }
     console.log(avgturnaround + "   " + avgwait)
-   
+
     let serverutil1 = 0;
-    let serverutil2 = 0; 
-    let serverutilization1 = [] ;
-            let serverutilization2 = [] ;
-            for (let i = 0; i < server.length; i++) {
-                  if (server[i]== 1) {
-                       serverutilization1.push(i);
-                  }
-                  else{
-                    serverutilization2.push(i);
-                  }
-            }
-            let idle = 0
-            for (let k = 0; k < serverutilization1.length-1; k++) {
-                // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
-                if(starttime[serverutilization1[k+1]] > endtime[serverutilization1[k]])
-                     idle = idle + (starttime[serverutilization1[k+1]] - endtime[serverutilization1[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil1 = idle/previousEndTimes[0]
-            console.log(  "Server utilized 1 "+ serverutil1)
+    let serverutil2 = 0;
+    let serverutilization1 = [];
+    let serverutilization2 = [];
+    for (let i = 0; i < server.length; i++) {
+        if (server[i] == 1) {
+            serverutilization1.push(i);
+        }
+        else {
+            serverutilization2.push(i);
+        }
+    }
+    let idle = 0
+    for (let k = 0; k < serverutilization1.length - 1; k++) {
+        // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
+        if (starttime[serverutilization1[k + 1]] > endtime[serverutilization1[k]])
+            idle = idle + (starttime[serverutilization1[k + 1]] - endtime[serverutilization1[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil1 = idle / previousEndTimes[0]
+    console.log("Server utilized 1 " + serverutil1)
 
 
-            idle = 0
-            for (let k = 0; k < serverutilization2.length-1; k++) {
-                // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
-                if(starttime[serverutilization2[k+1]] > endtime[serverutilization2[k]])
-                     idle = idle + (starttime[serverutilization2[k+1]] - endtime[serverutilization2[k]])
-                     
-            }
-            idle = previousEndTimes[0] - idle
-            serverutil2 = idle/previousEndTimes[0]
-            console.log( "Server utilized  2  "+ serverutil2)
+    idle = 0
+    for (let k = 0; k < serverutilization2.length - 1; k++) {
+        // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
+        if (starttime[serverutilization2[k + 1]] > endtime[serverutilization2[k]])
+            idle = idle + (starttime[serverutilization2[k + 1]] - endtime[serverutilization2[k]])
+
+    }
+    idle = previousEndTimes[0] - idle
+    serverutil2 = idle / previousEndTimes[0]
+    console.log("Server utilized  2  " + serverutil2)
 
     function generateRandomWithVariance(mean, variance) {
         const stdDev = Math.sqrt(variance);

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles.css" type="text/css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
 </head>
@@ -78,7 +79,8 @@
                 </div>
 
                 <div class="input-group mb-3 mean-input-boxes">
-                    <input type="number" class="form-control w-100 py-3" placeholder="Mean of service" id="service-mean">
+                    <input type="number" class="form-control w-100 py-3" placeholder="Mean of service"
+                        id="service-mean">
 
                 </div>
 
@@ -123,7 +125,8 @@
                     <button id="calculate-btn" onclick="Calculate()">Calculate</button>
                 </div> -->
 
-                <button type="button" class="btn btn-success mt-3" id="calculate-btn" onclick="Calculate()">Calculate</button>
+                <button type="button" class="btn btn-success mt-3" id="calculate-btn"
+                    onclick="Calculate()">Calculate</button>
 
                 <br /> <br />
 
@@ -133,8 +136,14 @@
         </div>
     </div>
 
+    <!-- CHARTS -->
     <br /> <br />
-
+    <div class="charts-container px-2">
+        <div id="linechart"></div>
+    </div>
+    
+    <!-- TABLES -->
+    <br /> <br />
     <div class="container-table">
         <table id="simulation_table" class="sim-table">
             <!-- The table headers -->
@@ -175,6 +184,8 @@
     </div>
 
 
+
+
     <script src="./index.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -186,6 +197,9 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
+    <script type="text/javascript">
+
+    </script>
 </body>
 
 </html>
