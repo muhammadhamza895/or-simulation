@@ -85,8 +85,13 @@ function cpCalcUniform(mean, variance) {
 
 }
 
+function setSelectedDistributionValue(distribution) {
+    const selectElement = document.getElementById('distribution-display');
+    selectElement.innerHTML = distribution
+}
 
 function Addvalues(value) {
+    setSelectedDistributionValue(value)
     // var queuingModel = document.getElementById("queuing-model").value;
     var queuingModel = value || 'M/M/1';
     console.log({queuingModel})
