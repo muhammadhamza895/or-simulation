@@ -13,112 +13,124 @@
 </head>
 
 <body>
+    <div class="px-2 py-5 top-container">
+        <div class="container-1">
 
-    <div class="container-1">
-
-        <div class="div-heading">
-            <h1 class="heading">Queueing Simulation</h1>
+            <div class="div-heading">
+                <h1 class="heading">Carrefour Queueing Simulation</h1>
+            </div>
         </div>
-    </div>
 
-    <div class="container-1">
+        <div class="container-1 form-container px-3 py-4">
 
-        <div>
+            <div class="w-100  d-flex flex-column align-items-center">
+                <!-- <label>Type of Queuing Model </label> <br /> -->
+                <!-- <select id="queuing-model" onchange="Addvalues()">
+                    <option value="">--Select any distribution--</option>
+                    <option value="M/M/1"> M/M/1</option>
+                    <option value="M/M/2"> M/M/2</option>
+                    <option value="M/G/1"> M/G/1</option>
+                    <option value="M/G/2"> M/G/2</option>
+                    <option value="G/G/1"> G/G/1</option>
+                    <option value="G/G/2"> G/G/2</option>
+                </select> -->
+                <p class="mb-3 d-flex align-items-center">
+                    <strong style="flex-shrink: 0;">Selected Queuing Model : </strong>
+                    <input type="text"
+                        class="form-control w-100 slected-queuing-model bg-transparent border-0 border-bottom p-0 ml-3"
+                        value="None" id="queuing-model">
+                </p>
 
-            <label>Type of Queuing Model </label> <br />
-            <!-- <select id="queuing-model" onchange="Addvalues()">
-                <option value="">--Select any distribution--</option>
-                <option value="M/M/1"> M/M/1</option>
-                <option value="M/M/2"> M/M/2</option>
-                <option value="M/G/1"> M/G/1</option>
-                <option value="M/G/2"> M/G/2</option>
-                <option value="G/G/1"> G/G/1</option>
-                <option value="G/G/2"> G/G/2</option>
-            </select> -->
-
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Select any distribution
-                </button>
-                <div class="dropdown-menu w-100 ">
-                    <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/1')">M/M/1</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/2')">M/M/2</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/3')">M/M/3</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/4')">M/M/4</a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Select Queuing Model
+                    </button>
+                    <div class="dropdown-menu w-100 ">
+                        <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/1')">M/M/1</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/2')">M/M/2</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/3')">M/M/3</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="setSelectedDistributionValue('M/M/4')">M/M/4</a>
+                    </div>
                 </div>
-            </div>
-            <p>
-                <strong>Selected Distribution : </strong>
-                <input type="text" class="form-control w-100" placeholder="Selected Distribution" id="queuing-model">
-            </p>
 
 
-            <br /> <br />
 
-            <!-- <input type="text" placeholder="Mean of Arrival Distribution" id="mean-arrival"> <br /> <br />
-
-
-            <input type="number" placeholder="Mean of service" id="service-mean"> <br /><br /> -->
-
-            <div class="input-group mb-3 d-flex flex-column">
-                <input type="text" class="form-control w-100 " placeholder="Mean of Arrival Distribution" id="mean-arrival">
-            </div>
-
-            <div class="input-group mb-3">
-                <input type="text" class="form-control w-100 " placeholder="Mean of service" id="service-mean">
-
-            </div>
-
-
-            <!-- <input type="number" placeholder="Number of observations" id="observations"> <br /> <br /> -->
-
-
-            <input type="text" placeholder="Service Minimum" id="service_min">
-            <div class="space">
                 <br /> <br />
-            </div>
 
-            <input type="text" placeholder="Service Maximum" id="service_max">
-            <div class="space">
+                <!-- <input type="text" placeholder="Mean of Arrival Distribution" id="mean-arrival"> <br /> <br />
+    
+    
+                <input type="number" placeholder="Mean of service" id="service-mean"> <br /><br /> -->
+
+                <p class="mb-3 ">
+                    <strong>
+                        Input Mean Values
+                    </strong>
+                </p>
+
+                <div class="input-group mb-3 d-flex flex-column mean-input-boxes">
+                    <input type="text" class="form-control w-100 py-3" placeholder="Mean of Arrival Distribution"
+                        id="mean-arrival">
+                </div>
+
+                <div class="input-group mb-3 mean-input-boxes">
+                    <input type="text" class="form-control w-100 py-3" placeholder="Mean of service" id="service-mean">
+
+                </div>
+
+
+                <!-- <input type="number" placeholder="Number of observations" id="observations"> <br /> <br /> -->
+
+
+                <!-- <input type="text" placeholder="Service Minimum" id="service_min">
+                <div class="space">
+                    <br /> <br />
+                </div>
+
+                <input type="text" placeholder="Service Maximum" id="service_max">
+                <div class="space">
+                    <br /> <br />
+                </div> -->
+
+                <!-- <input type="text" placeholder="Number of servers" id="num_servers"> 
+                <div class="space">
+                    <br /> <br />
+                </div> -->
+
+                <!-- <input type="number" placeholder="Average Inter-arrival time" id="avg_interarrival">
+                <div class="space">
+                    <br /> <br />
+                </div>
+
+                <input type="number" placeholder="Average Service time" id="avg_service">
+                <div class="space">
+                    <br /> <br />
+                </div>
+
+                <input type="number" placeholder="Variance of Arrival time" id="var_arrival">
+                <div class="space">
+                    <br /> <br />
+                </div>
+
+                <input type="number" placeholder="Variance of Service time" id="var_service">
+                <br /> <br /> -->
+
+                <!-- <div class="container-1">
+                    <button id="calculate-btn" onclick="Calculate()">Calculate</button>
+                </div> -->
+
+                <button type="button" class="btn btn-success mt-3" id="calculate-btn" onclick="Calculate()">Calculate</button>
+
                 <br /> <br />
+
+
             </div>
-
-            <!-- <input type="text" placeholder="Number of servers" id="num_servers"> 
-            <div class="space">
-                <br /> <br />
-            </div> -->
-
-            <input type="number" placeholder="Average Inter-arrival time" id="avg_interarrival">
-            <div class="space">
-                <br /> <br />
-            </div>
-
-            <input type="number" placeholder="Average Service time" id="avg_service">
-            <div class="space">
-                <br /> <br />
-            </div>
-
-            <input type="number" placeholder="Variance of Arrival time" id="var_arrival">
-            <div class="space">
-                <br /> <br />
-            </div>
-
-            <input type="number" placeholder="Variance of Service time" id="var_service">
-            <br /> <br />
-
-            <div class="container-1">
-                <button id="calculate-btn" onclick="Calculate()">Calculate</button>
-            </div>
-
-            <br /> <br />
-
 
         </div>
-
     </div>
 
     <br /> <br />

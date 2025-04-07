@@ -2,13 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 
-/* *{
-    font-family: 'Times New Roman', Times, serif;
-    background-color: bisque;
-} */
+*{
+    /* font-family: 'Times New Roman', Times, serif; */
+    color: #000000;
+    box-sizing: border-box;
+}
 
 body {
-    background-color: bisque;
+    background: #4ECDC4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #556270, #4ECDC4);  
+    background: linear-gradient(to right, #556270, #4ECDC4);
 }
 
 .container-1{
@@ -37,19 +40,19 @@ body {
 
 }
 
-#calculate-btn{
+/* #calculate-btn{
     width: 170px;
     height: 30px;
     background-color: brown;
     border-radius: 10px;
     color: white;
     font-size: large;
-}
-
+} */
+/* 
 #calculate-btn:hover  {
     background-color: aqua;
     color: black;
-}
+} */
 
 .container-table{
     display: flex;
@@ -121,13 +124,39 @@ body {
 
 
 
+.top-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 
+.form-container {
+    height: fit-content;
+    width: 100%;
+    max-width: 550px;
+    margin: 0px auto;
+
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.2px);
+    -webkit-backdrop-filter: blur(6.2px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
 
+.slected-queuing-model{
+    pointer-events: none;
+    width: 50px !important;
+}
 
 
-
+.mean-input-boxes {
+    width: 100%;
+    max-width: 300px;
+}
 
 
 
