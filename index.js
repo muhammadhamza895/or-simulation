@@ -163,7 +163,7 @@ const generateArrivalChart = (arrivalTimes) => {
                 bottom: 50,
                 right: 20
             },
-            backgroundColor: '#f4f4f4',
+            backgroundColor: '#d1f2eb',
             hAxis: {
                 title: 'Customer'
             },
@@ -180,6 +180,47 @@ const generateArrivalChart = (arrivalTimes) => {
     }
 }
 
+const generateServiceTimeChart = (servieTimes) => {
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var yValues = servieTimes
+        var xValues = Array.from(Array(yValues.length).keys())
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Customer');
+        data.addColumn('number', 'Service Time');
+
+        var chartData = xValues.map((x, index) => [x, yValues[index]]);
+        data.addRows(chartData);
+
+        var options = {
+            title: 'Customer Service Time',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            height: 500,
+            chartArea: {
+                top: 30,
+                left: 40,
+                bottom: 50,
+                right: 20
+            },
+            backgroundColor: '#d1f2eb',
+            hAxis: {
+                title: 'Customer'
+            },
+            vAxis: {
+                title: 'Service Time'
+            },
+        };
+
+
+
+        lineChartContainer = document.getElementById('linechart-service')
+        var chart = new google.visualization.LineChart(lineChartContainer);
+        chart.draw(data, options);
+    }
+}
 
 
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
@@ -382,6 +423,7 @@ function generate_MM1_Table() {
     }
 
     generateArrivalChart(arrivalarray)
+    generateServiceTimeChart(servicearray)
 }
 
 // ------------------------------------ M / M / 2 MODEL  ---------------------------------------------- //
