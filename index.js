@@ -138,6 +138,16 @@ function Addvalues(value) {
     }
 }
 
+const generateGraphs=({
+    arrival= [],
+    service = [],
+    turnAround = []
+})=>{
+    generateArrivalChart(arrival)
+    generateServiceTimeChart(service)
+    generateTurnAroundTimeChart(turnAround)
+}
+
 const generateArrivalChart = (arrivalTimes) => {
     google.charts.setOnLoadCallback(drawChart);
 
@@ -222,6 +232,47 @@ const generateServiceTimeChart = (servieTimes) => {
     }
 }
 
+const generateTurnAroundTimeChart = (turnAroundTimes) => {
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var yValues = turnAroundTimes
+        var xValues = Array.from(Array(yValues.length).keys())
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Customer');
+        data.addColumn('number', 'Turn Around Time');
+
+        var chartData = xValues.map((x, index) => [x, yValues[index]]);
+        data.addRows(chartData);
+
+        var options = {
+            title: 'Customer Turn Around Time',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            height: 500,
+            chartArea: {
+                top: 30,
+                left: 40,
+                bottom: 50,
+                right: 20
+            },
+            backgroundColor: '#d1f2eb',
+            hAxis: {
+                title: 'Customer'
+            },
+            vAxis: {
+                title: 'Turn Around Time'
+            },
+        };
+
+
+
+        lineChartContainer = document.getElementById('linechart-turnAround')
+        var chart = new google.visualization.LineChart(lineChartContainer);
+        chart.draw(data, options);
+    }
+}
 
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
 function generate_MM1_Table() {
@@ -422,8 +473,10 @@ function generate_MM1_Table() {
         return Math.round(value);
     }
 
-    generateArrivalChart(arrivalarray)
-    generateServiceTimeChart(servicearray)
+    generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    // generateArrivalChart(arrivalarray)
+    // generateServiceTimeChart(servicearray)
+    // generateTurnAroundTimeChart(turnaround)
 }
 
 // ------------------------------------ M / M / 2 MODEL  ---------------------------------------------- //
