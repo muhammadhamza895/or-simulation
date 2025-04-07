@@ -86,8 +86,10 @@ function cpCalcUniform(mean, variance) {
 }
 
 
-function Addvalues() {
-    var queuingModel = document.getElementById("queuing-model").value;
+function Addvalues(value) {
+    // var queuingModel = document.getElementById("queuing-model").value;
+    var queuingModel = value || 'M/M/1';
+    console.log({queuingModel})
     var serviceMinInput = document.getElementById('service_min');
     var serviceMaxInput = document.getElementById('service_max');
     var serviceMean = document.getElementById('service-mean');
