@@ -680,6 +680,8 @@ function generate_MM2_Table() {
     function roundOff(value) {
         return Math.round(value);
     }
+
+    generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
 
 // ----------------------------------------- M / G / 1 MODEL  ---------------------------------------------- //
