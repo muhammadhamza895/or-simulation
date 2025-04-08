@@ -460,9 +460,9 @@ function generate_MM1_Table() {
     const avgWT = document.getElementById("avg-wait");
     const avgRT = document.getElementById("avg-response");
 
-    serverUtilization.innerHTML = serverutil;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
+    serverUtilization.innerHTML = serverutil.toFixed(2) + '%';
+    avgTA.innerHTML = avgturnaround.toFixed(2) + 'min';
+    avgWT.innerHTML = avgwait.toFixed(2)+ 'min';
 
 
     function exponentialRandom(mean) {
