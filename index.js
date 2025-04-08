@@ -454,15 +454,16 @@ function generate_MM1_Table() {
 
     let serverutil = idle / check;
     console.log("serverutil" + serverutil)
+    document.getElementsByClassName("cards-container")[0].style.display = 'grid';
 
-    const serverUtilization = document.getElementById("server-utlization");
+    // const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
     const avgRT = document.getElementById("avg-response");
 
-    serverUtilization.innerHTML = serverutil.toFixed(2) + '%';
-    avgTA.innerHTML = avgturnaround.toFixed(2) + 'min';
-    avgWT.innerHTML = avgwait.toFixed(2)+ 'min';
+    // serverUtilization.innerHTML = serverutil.toFixed(2) + '%';
+    avgTA.innerHTML = avgturnaround.toFixed(2) + ' min';
+    avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
     function exponentialRandom(mean) {
@@ -662,14 +663,15 @@ function generate_MM2_Table() {
 
     // console.log(serverutilization)
 
-    const serverUtilization = document.getElementById("server-utlization");
+    document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    // const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
     const avgRT = document.getElementById("avg-response");
 
-    serverUtilization.innerHTML = `<span><b>Server utilization 1 </b> : ${serverutil1}</span> &nbsp <span><b>Server utilization 2 </b> : ${serverutil2}</span>`;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
+    // serverUtilization.innerHTML = `<span><b>Server utilization 1 </b> : ${serverutil1}</span> &nbsp <span><b>Server utilization 2 </b> : ${serverutil2}</span>`;
+    avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
+    avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
     function exponentialRandom(mean) {
