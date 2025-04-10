@@ -43,6 +43,8 @@ function cpCalc(arrivalMean) {
         count = count + 1
 
     }
+
+    cparray[cparray.length - 1] = 1
     let array = [cparray, cplookuparray]
     return array
 
