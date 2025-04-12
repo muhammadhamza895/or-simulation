@@ -938,6 +938,167 @@ const generate_MM3_Table=()=>{
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
 
+// ------------------------------------ M / M / 4 MODEL  ---------------------------------------------- //
+
+const generate_MM4_Table=()=>{
+    const arrivalMean = parseFloat(document.getElementById('mean-arrival').value);
+    const serviceMean = parseFloat(document.getElementById('service-mean').value);
+    let simulationTime = parseInt(document.getElementById("simulation-time").value)
+
+    let cparray = []
+    let cplookuparray = []
+    let interarrival = []
+
+    arraymain = cpCalc(arrivalMean);
+    cparray = arraymain[0]
+    cplookuparray = arraymain[1]
+
+    // For calculating the inter arrival time 
+
+    interarrival[0] = 0
+    let totalTime = 0
+    let interarrivalIndex = 1
+
+    while (totalTime <= simulationTime) {
+        random = Math.random();
+
+        if (random == 0) {
+            random = random + 0.1;
+        }
+        else {
+            for (let j = 0; j < cplookuparray.length; j++) {
+                if (random > cplookuparray[j] && random < cparray[j]) {
+                    interarrival[interarrivalIndex] = j + 1;
+                    interarrivalIndex++
+                    totalTime += j+1
+                }
+
+            }
+        }
+    }
+
+    interarrival.pop()
+
+    let currentTime = 0;
+    let arrivalarray = [];
+    let servicearray = [];
+    let starttime = [];
+    let endtime = []
+    let turnaround = [];
+    let waittime = [];
+    let service = 0;
+    // For calculating the Arrival time and Service Time.
+    for (let i = 0; i < interarrival.length; i++) {
+        currentTime = currentTime + interarrival[i]
+        arrivalarray[i] = currentTime;
+        service = exponentialRandom(serviceMean);
+        if (Math.floor(service) == 0) {
+            servicearray[i] = Math.ceil(service);
+        }
+        else {
+            servicearray[i] = roundOff(service)
+        }
+    }
+
+
+    const table = document.getElementById('simulation_table');
+    const cp_table = document.getElementById("cp_table");
+    // let currentTime = 0;
+    let previousEndTimes = [0, 0, 0, 0];
+    let server = []
+
+
+    // Clear previous table rows
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+
+    while (cp_table.rows.length > 1) {
+        cp_table.deleteRow(1);
+    }
+
+    // CRETAING COMMULATIVE TABLE
+    for (let i= 0; i < cparray.length; i++) {
+        const cumlookup = cplookuparray[i]
+        const cum = cparray[i];
+        const avgArrival = i;
+
+        const row = cp_table.insertRow();
+
+        row.insertCell(0).innerText = cumlookup;
+        row.insertCell(1).innerText = cum;
+        row.insertCell(2).innerText = avgArrival;
+    }
+
+    for (let i = 0; i < interarrival.length; i++) { // Simulate number of observations time slots
+        const seqNumber = i + 1;
+        const interArrivalRate = interarrival[i]
+        currentTime = arrivalarray[i]
+        serviceTime = servicearray[i];
+        const startTimes = [
+            Math.max(currentTime, previousEndTimes[0]), 
+            Math.max(currentTime, previousEndTimes[1]),
+            Math.max(currentTime, previousEndTimes[2]),
+            Math.max(currentTime, previousEndTimes[3])
+        ]
+
+
+        // Find the server with the minimum end time
+        let serverIndex = 0;
+        if (previousEndTimes[0] <= currentTime) {
+            serverIndex = 0; 
+        } else if (previousEndTimes[1] <= currentTime) {
+            serverIndex = 1; 
+        } else if (previousEndTimes[2] <= currentTime) {
+            serverIndex = 2; 
+        } else if (previousEndTimes[3] <= currentTime) {
+            serverIndex = 3; 
+        } else {
+            const index = previousEndTimes.indexOf(Math.min(...previousEndTimes))
+            serverIndex = index
+        }
+
+        const endTime = startTimes[serverIndex] + serviceTime;
+        endtime[i] = endTime
+        const turnaroundTime = endTime > currentTime ? endTime - currentTime : 0;
+        turnaround[i] = turnaroundTime
+        const waitTime = startTimes[serverIndex] > currentTime ? startTimes[serverIndex] - currentTime : 0;
+        waittime[i] = waitTime
+        const responseTime = waitTime + serviceTime;
+
+
+        const row = table.insertRow();
+        row.insertCell(0).innerText = seqNumber;
+        // row.insertCell(1).innerText = cumlookup;
+        // row.insertCell(2).innerText = cum;
+        // row.insertCell(3).innerText = avgArrival;
+        row.insertCell(1).innerText = interArrivalRate;
+
+        row.insertCell(2).innerText = roundOff(currentTime) + ' min';
+        row.insertCell(3).innerText = roundOff(serviceTime);
+        row.insertCell(4).innerText = roundOff(startTimes[serverIndex])
+        starttime[i] = roundOff(startTimes[serverIndex])
+        row.insertCell(5).innerText = roundOff(endTime);
+        row.insertCell(6).innerText = roundOff(turnaroundTime);
+        row.insertCell(7).innerText = roundOff(waitTime);
+        row.insertCell(8).innerText = roundOff(responseTime);
+        row.insertCell(9).innerText = "Server " + (serverIndex + 1);
+        server[i] = serverIndex + 1;
+        previousEndTimes[serverIndex] = endTime;
+    }
+
+    function exponentialRandom(mean) {
+        let value = -Math.log(1 - Math.random()) * mean;
+        return value >= 0 ? value : 0;
+    }
+
+    function roundOff(value) {
+        return Math.round(value);
+    }
+
+    generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+}
+
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
 
 
@@ -980,5 +1141,8 @@ function Calculate() {
 
     }
 
+    if (queuingModel === "M/M/4") {
+        generate_MM4_Table();
 
+    }
 }
