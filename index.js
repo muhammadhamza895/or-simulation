@@ -780,200 +780,12 @@ function generate_MM2_Table() {
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
 
-// ----------------------------------------- M / G / 1 MODEL  ---------------------------------------------- //
+// ------------------------------------ M / M / 3 MODEL  ---------------------------------------------- //
 
-function generate_MG1_Table() {
-
-
+const generate_MM3_Table=()=>{
     const arrivalMean = parseFloat(document.getElementById('mean-arrival').value);
-    const serviceMin = parseFloat(document.getElementById('service_min').value);
-    const serviceMax = parseFloat(document.getElementById('service_max').value);
-
-
-    // For The Cummulative Probablity 
-    let interarrival = []
-    let arraymain = cpCalc(arrivalMean)
-    cparray = arraymain[0]
-    cplookuparray = arraymain[1]
-    // For calculating the inter arrival time 
-
-    interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
-        random = Math.random();
-
-        if (random == 0) {
-            random = random + 0.1;
-        }
-        else {
-            for (let j = 0; j < cplookuparray.length; j++) {
-                if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
-                }
-
-            }
-        }
-
-    }
-    let currentTime = 0;
-    let arrivalarray = [];
-    let servicearray = [];
-    let starttime = [];
-    let endtime = []
-    let turnaround = [];
-    let waittime = [];
-    let service = 0;
-    // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
-        currentTime = currentTime + interarrival[i]
-        arrivalarray[i] = currentTime;
-        service = uniformRandom(serviceMin, serviceMax);
-
-
-        if (Math.floor(service) == 0) {
-            servicearray[i] = Math.ceil(service);
-        }
-        else {
-            servicearray[i] = roundOff(service)
-        }
-    }
-
-
-    const table = document.getElementById('simulation_table');
-    let previousEndTime = 0;
-
-    // Clear previous table rows
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
-    }
-
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
-        const seqNumber = i + 1;
-        const cumlookup = cplookuparray[i]
-        const cum = cparray[i];
-        const avgArrival = i;
-        const interArrivalRate = interarrival[i]
-        currentTime = arrivalarray[i]
-        serviceTime = servicearray[i];
-        const startTime = Math.max(currentTime, previousEndTime);
-        const endTime = startTime + serviceTime;
-        endtime[i] = endTime
-        // const startTime = starttime[i]
-        // endTime = endtime[i];
-        // const serviceTime = uniformRandom(serviceMin, serviceMax);
-        turnaroundTime = endTime - currentTime;
-        turnaround[i] = turnaroundTime
-        waitTime = startTime - currentTime;
-        waittime[i] = waitTime
-        responseTime = waitTime + serviceTime;
-
-
-
-
-        // currentTime += exponentialRandom(arrivalMean);
-
-
-
-        // const turnaroundTime = endTime - currentTime;
-        // const waitTime = startTime - currentTime;
-        // const responseTime = waitTime + serviceTime;
-
-        row = table.insertRow();
-        row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
-
-        row.insertCell(5).innerText = roundOff(currentTime);
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTime);
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-
-        previousEndTime = endTime;
-    }
-    // For Average Wait time and turn Around time .
-    let avgwait = 0;
-    let countwait = 0;
-    let avgturnaround = 0;
-    let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
-        avgturnaround = turnaround[i] + avgturnaround
-        servicetime = servicetime + servicearray[i]
-        // console.log(endtime[i])
-        if (waittime[i] != 0) {
-            avgwait = waittime[i] + avgwait;
-            countwait = countwait + 1
-
-        }
-
-
-    }
-    avgturnaround = avgturnaround / cparray.length;
-    if (avgwait == 0) {
-        avgwait = 0
-    }
-    else {
-        avgwait = avgwait / (countwait);
-
-    }
-    console.log(avgturnaround + "   " + avgwait)
-
-
-    // Server utilization 
-    let idleServer = 0;
-    let serverutil = 0;
-    for (let i = 0; i < cparray.length - 1; i++) {
-        if (endtime[i] < starttime[i + 1]) {
-            idleServer = idleServer + (starttime[i + 1] - endtime[i])
-        }
-
-    }
-    let eindex = cparray.length - 1
-    console.log(endtime[eindex])
-    if (idleServer == 0) {
-        serverutil = 1;
-        console.log("Server  Utilized " + serverutil)
-    }
-    else {
-
-        serverutil = idleServer / endtime[eindex]
-        console.log("Server  Utilized " + serverutil)
-    }
-
-    const serverUtilization = document.getElementById("server-utlization");
-    const avgTA = document.getElementById("avg-turnaround");
-    const avgWT = document.getElementById("avg-wait");
-    const avgRT = document.getElementById("avg-response");
-
-    serverUtilization.innerHTML = serverutil;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
-
-
-    function exponentialRandom(mean) {
-        return Math.round(-Math.log(1 - Math.random()) / mean);
-    }
-
-    function uniformRandom(min, max) {
-        return Math.round((Math.random() * (max - min)) + min);
-    }
-
-    function roundOff(value) {
-        return Math.round(value);
-    }
-}
-
-
-// --------------------------------------- M/G/2 MODEL -------------------------------------------- // 
-
-function generate_MG2_Table() {
-    const arrivalMean = parseFloat(document.getElementById('mean-arrival').value);
-    const serviceMin = parseFloat(document.getElementById('service_min').value);
-    const serviceMax = parseFloat(document.getElementById('service_max').value);
-    const numServers = 2
+    const serviceMean = parseFloat(document.getElementById('service-mean').value);
+    let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
     let cparray = []
     let cplookuparray = []
@@ -986,7 +798,10 @@ function generate_MG2_Table() {
     // For calculating the inter arrival time 
 
     interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
+    let totalTime = 0
+    let interarrivalIndex = 1
+
+    while (totalTime <= simulationTime) {
         random = Math.random();
 
         if (random == 0) {
@@ -995,13 +810,17 @@ function generate_MG2_Table() {
         else {
             for (let j = 0; j < cplookuparray.length; j++) {
                 if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
+                    interarrival[interarrivalIndex] = j + 1;
+                    interarrivalIndex++
+                    totalTime += j+1
                 }
 
             }
         }
-
     }
+
+    interarrival.pop()
+
     let currentTime = 0;
     let arrivalarray = [];
     let servicearray = [];
@@ -1011,17 +830,24 @@ function generate_MG2_Table() {
     let waittime = [];
     let service = 0;
     // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         currentTime = currentTime + interarrival[i]
         arrivalarray[i] = currentTime;
-
+        service = exponentialRandom(serviceMean);
+        if (Math.floor(service) == 0) {
+            servicearray[i] = Math.ceil(service);
+        }
+        else {
+            servicearray[i] = roundOff(service)
+        }
     }
 
+
     const table = document.getElementById('simulation_table');
-    let previousEndTimes = new Array(numServers).fill(0);
-
+    const cp_table = document.getElementById("cp_table");
+    // let currentTime = 0;
+    let previousEndTimes = [0, 0, 0];
     let server = []
-
 
 
     // Clear previous table rows
@@ -1029,536 +855,86 @@ function generate_MG2_Table() {
         table.deleteRow(1);
     }
 
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
+    while (cp_table.rows.length > 1) {
+        cp_table.deleteRow(1);
+    }
 
-        const seqNumber = i + 1;
+    // CRETAING COMMULATIVE TABLE
+    for (let i= 0; i < cparray.length; i++) {
         const cumlookup = cplookuparray[i]
         const cum = cparray[i];
         const avgArrival = i;
+
+        const row = cp_table.insertRow();
+
+        row.insertCell(0).innerText = cumlookup;
+        row.insertCell(1).innerText = cum;
+        row.insertCell(2).innerText = avgArrival;
+    }
+
+    for (let i = 0; i < interarrival.length; i++) { // Simulate number of observations time slots
+        const seqNumber = i + 1;
         const interArrivalRate = interarrival[i]
         currentTime = arrivalarray[i]
+        serviceTime = servicearray[i];
+        const startTimes = [
+            Math.max(currentTime, previousEndTimes[0]), 
+            Math.max(currentTime, previousEndTimes[1]),
+            Math.max(currentTime, previousEndTimes[2])
+        ]
 
-        const serviceTime = uniformRandom(serviceMin, serviceMax);
-        const startTimes = new Array(numServers);
-
-        for (let serverIndex = 0; serverIndex < numServers; serverIndex++) {
-            startTimes[serverIndex] = Math.max(currentTime, previousEndTimes[serverIndex]);
-        }
 
         // Find the server with the minimum end time
         let serverIndex = 0;
-
-
-
-        for (let i = 1; i < numServers; i++) {
-            if (previousEndTimes[i] < previousEndTimes[serverIndex]) {
-                serverIndex = i;
-            }
+        if (previousEndTimes[0] <= currentTime) {
+            serverIndex = 0; 
+        } else if (previousEndTimes[1] <= currentTime) {
+            serverIndex = 1; 
+        } else if (previousEndTimes[2] <= currentTime) {
+            serverIndex = 2; 
+        } else {
+            const index = previousEndTimes.indexOf(Math.min(...previousEndTimes))
+            serverIndex = index
         }
 
         const endTime = startTimes[serverIndex] + serviceTime;
         endtime[i] = endTime
-        const turnaroundTime = endTime - currentTime;
+        const turnaroundTime = endTime > currentTime ? endTime - currentTime : 0;
         turnaround[i] = turnaroundTime
-        const waitTime = startTimes[serverIndex] - currentTime;
+        const waitTime = startTimes[serverIndex] > currentTime ? startTimes[serverIndex] - currentTime : 0;
         waittime[i] = waitTime
         const responseTime = waitTime + serviceTime;
 
 
         const row = table.insertRow();
-
         row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
+        // row.insertCell(1).innerText = cumlookup;
+        // row.insertCell(2).innerText = cum;
+        // row.insertCell(3).innerText = avgArrival;
+        row.insertCell(1).innerText = interArrivalRate;
 
-        row.insertCell(5).innerText = roundOff(currentTime);
-
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTimes[serverIndex]);
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-        row.insertCell(12).innerText = "Server " + (serverIndex + 1);
-
+        row.insertCell(2).innerText = roundOff(currentTime) + ' min';
+        row.insertCell(3).innerText = roundOff(serviceTime);
+        row.insertCell(4).innerText = roundOff(startTimes[serverIndex])
+        starttime[i] = roundOff(startTimes[serverIndex])
+        row.insertCell(5).innerText = roundOff(endTime);
+        row.insertCell(6).innerText = roundOff(turnaroundTime);
+        row.insertCell(7).innerText = roundOff(waitTime);
+        row.insertCell(8).innerText = roundOff(responseTime);
+        row.insertCell(9).innerText = "Server " + (serverIndex + 1);
+        server[i] = serverIndex + 1;
         previousEndTimes[serverIndex] = endTime;
     }
-
-    let avgwait = 0;
-    let countwait = 0;
-    let avgturnaround = 0;
-    let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
-        avgturnaround = turnaround[i] + avgturnaround
-        servicetime = servicetime + servicearray[i]
-        // console.log(endtime[i])
-        if (waittime[i] != 0) {
-            avgwait = waittime[i] + avgwait;
-            countwait = countwait + 1
-
-        }
-
-
-    }
-    avgturnaround = avgturnaround / cparray.length;
-    if (avgwait == 0) {
-        avgwait = 0
-    }
-    else {
-        avgwait = avgwait / (countwait);
-
-    }
-    console.log(avgturnaround + "   " + avgwait)
-
-
-    let serverutil1 = 0;
-    let serverutil2 = 0;
-    let serverutilization1 = [];
-    let serverutilization2 = [];
-    for (let i = 0; i < server.length; i++) {
-        if (server[i] == 1) {
-            serverutilization1.push(i);
-        }
-        else {
-            serverutilization2.push(i);
-        }
-    }
-    let idle = 0
-    for (let k = 0; k < serverutilization1.length - 1; k++) {
-        // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
-        if (starttime[serverutilization1[k + 1]] > endtime[serverutilization1[k]])
-            idle = idle + (starttime[serverutilization1[k + 1]] - endtime[serverutilization1[k]])
-
-    }
-    idle = previousEndTimes[0] - idle
-    serverutil1 = idle / previousEndTimes[0]
-    console.log("Server utilized 1 " + serverutil1)
-
-
-    idle = 0
-    for (let k = 0; k < serverutilization2.length - 1; k++) {
-        // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
-        if (starttime[serverutilization2[k + 1]] > endtime[serverutilization2[k]])
-            idle = idle + (starttime[serverutilization2[k + 1]] - endtime[serverutilization2[k]])
-
-    }
-    idle = previousEndTimes[0] - idle
-    serverutil2 = idle / previousEndTimes[0]
-    console.log("Server utilized  2  " + serverutil2)
-
-    const serverUtilization = document.getElementById("server-utlization");
-    const avgTA = document.getElementById("avg-turnaround");
-    const avgWT = document.getElementById("avg-wait");
-    const avgRT = document.getElementById("avg-response");
-
-    serverUtilization.innerHTML = `<span><b>Server utilization 1 </b> : ${serverutil1}</span> &nbsp <span><b>Server utilization 2 </b> : ${serverutil2}</span>`;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
 
     function exponentialRandom(mean) {
-        return -Math.log(1 - Math.random()) / mean;
-    }
-
-    function uniformRandom(min, max) {
-        return Math.random() * (max - min) + min;
-    }
-
-    function roundOff(value) {
-        return Math.round(value);
-    }
-}
-
-
-// -------------------------------------------- G/G/1 MODEL ----------------------------------------- //
-
-function generate_GG1_Table() {
-    const avgInterarrival = parseFloat(document.getElementById('avg_interarrival').value);
-    const avgService = parseFloat(document.getElementById('avg_service').value);
-    const varArrival = parseFloat(document.getElementById('var_arrival').value);
-    const varService = parseFloat(document.getElementById('var_service').value);
-
-    const table = document.getElementById('simulation_table');
-    // let currentTime = 0;
-    let previousEndTime = 0;
-
-    let arraymain = cpCalcUniform(avgInterarrival, varArrival)
-    cparray = arraymain[0]
-    cplookuparray = arraymain[1]
-
-    // console.log(cparray,cplookuparray)
-    let interarrival = []
-
-
-    interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
-        random = Math.random();
-
-        if (random == 0) {
-            random = random + 0.1;
-        }
-        else {
-            for (let j = 0; j < cplookuparray.length; j++) {
-                if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
-                }
-
-            }
-        }
-
-    }
-    let currentTime = 0;
-    let arrivalarray = [];
-    let servicearray = [];
-    let starttime = [];
-    let endtime = []
-    let turnaround = [];
-    let waittime = [];
-    let service = 0;
-
-
-    // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
-        currentTime = currentTime + interarrival[i]
-        arrivalarray[i] = currentTime;
-
-    }
-
-
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
-    }
-
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
-        // const arrivalTime = generateRandomWithVariance(avgInterarrival, varArrival);
-        // currentTime += arrivalTime;
-
-        let serviceTime = 0;
-        while (serviceTime <= 0 || serviceTime < 1) {
-            serviceTime = generateRandomWithVariance(avgService, varService);
-        }
-        const seqNumber = i + 1;
-        const cumlookup = cplookuparray[i]
-        const cum = cparray[i];
-        const avgArrival = i;
-        const interArrivalRate = interarrival[i]
-        currentTime = arrivalarray[i]
-        const startTime = Math.max(currentTime, previousEndTime);
-        starttime[i] = roundOff(startTime)
-        const endTime = startTime + serviceTime;
-        endtime[i] = roundOff(endTime)
-        const turnaroundTime = Math.max(endTime - currentTime);
-        turnaround[i] = roundOff(turnaroundTime)
-        const waitTime = Math.max(startTime - currentTime);
-        waittime[i] = roundOff(waitTime)
-        const responseTime = waitTime + serviceTime;
-
-        const row = table.insertRow();
-        row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
-        row.insertCell(5).innerText = roundOff(currentTime);
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTime);
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-        row.insertCell(12).innerText = "Server " + 1;
-
-
-        previousEndTime = endTime;
-    }
-
-    let avgwait = 0;
-    let countwait = 0;
-    let avgturnaround = 0;
-    let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
-        avgturnaround = turnaround[i] + avgturnaround
-        servicetime = servicetime + servicearray[i]
-        // console.log(avgturnaround)
-        if (waittime[i] != 0) {
-            avgwait = waittime[i] + avgwait;
-            countwait = countwait + 1
-
-        }
-
-
-    }
-    avgturnaround = avgturnaround / cparray.length;
-    if (avgwait == 0) {
-        avgwait = 0
-    }
-    else {
-        avgwait = avgwait / (countwait);
-
-    };
-    console.log(avgturnaround + "   " + avgwait)
-
-    let idleServer = 0;
-    let serverutil = 0;
-    for (let i = 0; i < cparray.length - 1; i++) {
-        if (endtime[i] < starttime[i + 1]) {
-            idleServer = idleServer + (starttime[i + 1] - endtime[i])
-        }
-
-    }
-    let eindex = cparray.length - 1
-    // console.log(endtime[eindex])
-    if (idleServer == 0) {
-        serverutil = 1;
-        console.log("Server  Utilized " + serverutil)
-    }
-    else {
-
-        serverutil = idleServer / endtime[eindex]
-        console.log("Server  Utilized " + serverutil)
-    }
-
-
-    function generateRandomWithVariance(mean, variance) {
-        const stdDev = Math.sqrt(variance);
-        const normalDist = generateStandardNormal();
-        let value = mean + stdDev * normalDist;
-        value = Math.max(0, value); // Ensure non-negative value
-        return value;
-    }
-
-    function generateStandardNormal() {
-        let u, v, s;
-        do {
-            u = Math.random() * 2 - 1;
-            v = Math.random() * 2 - 1;
-            s = u * u + v * v;
-        } while (s >= 1 || s === 0);
-        const multiplier = Math.sqrt(-2 * Math.log(s) / s);
-        return u * multiplier;
-    }
-
-    const serverUtilization = document.getElementById("server-utlization");
-    const avgTA = document.getElementById("avg-turnaround");
-    const avgWT = document.getElementById("avg-wait");
-    const avgRT = document.getElementById("avg-response");
-
-    serverUtilization.innerHTML = serverutil;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
-
-    function roundOff(value) {
-        return Math.round(value);
-    }
-}
-
-// ----------------------------------------- G/G/2 MODEL -------------------------------------------- // 
-
-function generate_GG2_Table() {
-    const avgInterarrival = parseFloat(document.getElementById('avg_interarrival').value);
-    const avgService = parseFloat(document.getElementById('avg_service').value);
-    const varArrival = parseFloat(document.getElementById('var_arrival').value);
-    const varService = parseFloat(document.getElementById('var_service').value);
-
-    const numServers = 2
-
-    let arraymain = cpCalcUniform(avgInterarrival, varArrival)
-    cparray = arraymain[0]
-    cplookuparray = arraymain[1]
-
-    // console.log(cparray,cplookuparray)
-    let interarrival = []
-
-
-    interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
-        random = Math.random();
-
-        if (random == 0) {
-            random = random + 0.1;
-        }
-        else {
-            for (let j = 0; j < cplookuparray.length; j++) {
-                if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
-                }
-
-            }
-        }
-
-    }
-    let currentTime = 0;
-    let arrivalarray = [];
-    let servicearray = [];
-    let starttime = [];
-    let endtime = []
-    let turnaround = [];
-    let waittime = [];
-    let service = 0;
-
-
-    // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
-        currentTime = currentTime + interarrival[i]
-        arrivalarray[i] = currentTime;
-
-    }
-
-    let server = [];
-
-
-    const table = document.getElementById('simulation_table');
-    // let currentTime = 0;
-    let previousEndTimes = Array(numServers).fill(0);
-
-    // Clear previous table rows
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
-    }
-
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
-        // const arrivalTime = generateRandomWithVariance(avgInterarrival, varArrival);
-        // currentTime += arrivalTime;
-
-        let serviceTime = 0;
-        while (serviceTime <= 0) {
-            serviceTime = generateRandomWithVariance(avgService, varService);
-        }
-
-        const startTimes = previousEndTimes.slice(); // Copy previous end times
-
-        // Find the server with the minimum end time
-        let serverIndex = 0;
-        for (let j = 1; j < numServers; j++) {
-            if (previousEndTimes[j] < previousEndTimes[serverIndex]) {
-                serverIndex = j;
-            }
-        }
-        const seqNumber = i + 1;
-        const cumlookup = cplookuparray[i]
-        const cum = cparray[i];
-        const avgArrival = i;
-        const interArrivalRate = interarrival[i]
-        const endTime = startTimes[serverIndex] + serviceTime;
-        endtime[i] = roundOff(endTime);
-        const turnaroundTime = Math.max(0, endTime - currentTime);
-        turnaround[i] = roundOff(turnaroundTime)
-        const waitTime = Math.max(0, startTimes[serverIndex] - currentTime);
-        waittime[i] = roundOff(waitTime)
-        const responseTime = waitTime + serviceTime;
-
-        const row = table.insertRow();
-        row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
-        row.insertCell(5).innerText = roundOff(currentTime);
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTimes[serverIndex]);
-        starttime[i] = roundOff(startTimes[serverIndex])
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-        row.insertCell(12).innerText = "Server " + (serverIndex + 1);
-
-        previousEndTimes[serverIndex] = endTime;
-    }
-
-    let avgwait = 0;
-    let countwait = 0;
-    let avgturnaround = 0;
-    let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
-        avgturnaround = turnaround[i] + avgturnaround
-        servicetime = servicetime + servicearray[i]
-        // console.log(endtime[i])
-        if (waittime[i] != 0) {
-            avgwait = waittime[i] + avgwait;
-            countwait = countwait + 1
-
-        }
-
-
-    }
-    avgturnaround = avgturnaround / cparray.length;
-    if (avgwait == 0) {
-        avgwait = 0
-    }
-    else {
-        avgwait = avgwait / (countwait);
-
-    }
-    console.log(avgturnaround + "   " + avgwait)
-
-    let serverutil1 = 0;
-    let serverutil2 = 0;
-    let serverutilization1 = [];
-    let serverutilization2 = [];
-    for (let i = 0; i < server.length; i++) {
-        if (server[i] == 1) {
-            serverutilization1.push(i);
-        }
-        else {
-            serverutilization2.push(i);
-        }
-    }
-    let idle = 0
-    for (let k = 0; k < serverutilization1.length - 1; k++) {
-        // console.log(starttime[serverutilization1[k+1]] + "    " +  endtime[serverutilization1[k]] )
-        if (starttime[serverutilization1[k + 1]] > endtime[serverutilization1[k]])
-            idle = idle + (starttime[serverutilization1[k + 1]] - endtime[serverutilization1[k]])
-
-    }
-    idle = previousEndTimes[0] - idle
-    serverutil1 = idle / previousEndTimes[0]
-    console.log("Server utilized 1 " + serverutil1)
-
-
-    idle = 0
-    for (let k = 0; k < serverutilization2.length - 1; k++) {
-        // console.log(starttime[serverutilization2[k+1]] + "    " +  endtime[serverutilization2[k]] )
-        if (starttime[serverutilization2[k + 1]] > endtime[serverutilization2[k]])
-            idle = idle + (starttime[serverutilization2[k + 1]] - endtime[serverutilization2[k]])
-
-    }
-    idle = previousEndTimes[0] - idle
-    serverutil2 = idle / previousEndTimes[0]
-    console.log("Server utilized  2  " + serverutil2)
-
-    function generateRandomWithVariance(mean, variance) {
-        const stdDev = Math.sqrt(variance);
-        const normalDist = generateStandardNormal();
-        let value = mean + stdDev * normalDist;
-        value = Math.max(1, value); // Ensure non-zero value
-        return value;
-    }
-
-    function generateStandardNormal() {
-        let u, v, s;
-        do {
-            u = Math.random() * 2 - 1;
-            v = Math.random() * 2 - 1;
-            s = u * u + v * v;
-        } while (s >= 1 || s === 0);
-        const multiplier = Math.sqrt(-2 * Math.log(s) / s);
-        return u * multiplier;
+        let value = -Math.log(1 - Math.random()) * mean;
+        return value >= 0 ? value : 0;
     }
 
     function roundOff(value) {
         return Math.round(value);
     }
 
-    const serverUtilization = document.getElementById("server-utlization");
-    const avgTA = document.getElementById("avg-turnaround");
-    const avgWT = document.getElementById("avg-wait");
-    const avgRT = document.getElementById("avg-response");
-
-    serverUtilization.innerHTML = `<span><b>Server utilization 1 </b> : ${serverutil1}</span> &nbsp <span><b>Server utilization 2 </b> : ${serverutil2}</span>`;
-    avgTA.innerHTML = avgturnaround;
-    avgWT.innerHTML = avgwait;
 }
 
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
@@ -1598,21 +974,10 @@ function Calculate() {
 
     }
 
-    if (queuingModel === "M/G/1") {
-        generate_MG1_Table();
+    if (queuingModel === "M/M/3") {
+        generate_MM3_Table();
 
     }
 
-    if (queuingModel === "M/G/2") {
-        generate_MG2_Table();
-    }
-
-    if (queuingModel === "G/G/1") {
-        generate_GG1_Table();
-    }
-
-    if (queuingModel === "G/G/2") {
-        generate_GG2_Table();
-    }
 
 }
