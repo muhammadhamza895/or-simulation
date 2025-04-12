@@ -935,6 +935,7 @@ const generate_MM3_Table=()=>{
         return Math.round(value);
     }
 
+    generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
 
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
