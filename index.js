@@ -294,7 +294,7 @@ function generate_MM1_Table() {
 
     interarrival[0] = 0
     let totalTime = 0
-    let interarrivalIndex = 0
+    let interarrivalIndex = 1
 
     while (totalTime <= simulationTime) {
         random = Math.random();
@@ -313,6 +313,8 @@ function generate_MM1_Table() {
             }
         }
     }
+
+    interarrival.pop()
 
     // for (let i = 1; i < cparray.length; i++) {
     //     random = Math.random();
@@ -341,7 +343,7 @@ function generate_MM1_Table() {
     let waittime = [];
     let service = 0;
     // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         currentTime = currentTime + interarrival[i]
         arrivalarray[i] = currentTime;
         service = exponentialRandom(serviceMean);
@@ -359,7 +361,7 @@ function generate_MM1_Table() {
     let customer = 0
     let index = 0
 
-    for (let k = 0; index < cparray.length; k++) {
+    for (let k = 0; index < interarrival.length; k++) {
 
         if (arrivalarray[index] == check) {
             Ganttchart[k] = [check, check + servicearray[index], index + 1]
@@ -424,7 +426,7 @@ function generate_MM1_Table() {
     }
 
     // CREATING DATA TABLE
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
+    for (let i = 0; i < interarrival.length; i++) { // Simulate number of observations time slots
         const seqNumber = i + 1;
         // const cumlookup = cplookuparray[i]
         // const cum = cparray[i];
@@ -449,7 +451,7 @@ function generate_MM1_Table() {
         // row.insertCell(3).innerText = avgArrival;
         row.insertCell(1).innerText = interArrivalRate;
 
-        row.insertCell(2).innerText = roundOff(currentTime);
+        row.insertCell(2).innerText = roundOff(currentTime)+ ' min';
         row.insertCell(3).innerText = roundOff(serviceTime);
         row.insertCell(4).innerText = roundOff(startTime);
         row.insertCell(5).innerText = roundOff(endTime);
