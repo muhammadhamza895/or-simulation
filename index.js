@@ -282,6 +282,7 @@ function generate_MM1_Table() {
     var arrivalMean = parseFloat(document.getElementById("mean-arrival").value);
     var queuingModel = document.getElementById("queuing-model").value;
     var serviceMean = parseFloat(document.getElementById("service-mean").value);
+    let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
 
     let interarrival = []
@@ -292,7 +293,10 @@ function generate_MM1_Table() {
     // For calculating the inter arrival time 
 
     interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
+    let totalTime = 0
+    let interarrivalIndex = 0
+
+    while (totalTime <= simulationTime) {
         random = Math.random();
 
         if (random == 0) {
@@ -301,13 +305,33 @@ function generate_MM1_Table() {
         else {
             for (let j = 0; j < cplookuparray.length; j++) {
                 if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
+                    interarrival[interarrivalIndex] = j + 1;
+                    interarrivalIndex++
+                    totalTime += j+1
                 }
 
             }
         }
-
     }
+
+    // for (let i = 1; i < cparray.length; i++) {
+    //     random = Math.random();
+
+    //     if (random == 0) {
+    //         random = random + 0.1;
+    //     }
+    //     else {
+    //         for (let j = 0; j < cplookuparray.length; j++) {
+    //             if (random > cplookuparray[j] && random < cparray[j]) {
+    //                 interarrival[i] = j + 1;
+    //                 totalTime += j+1
+    //             }
+
+    //         }
+    //     }
+
+    // }
+
     let currentTime = 0;
     let arrivalarray = [];
     let servicearray = [];
