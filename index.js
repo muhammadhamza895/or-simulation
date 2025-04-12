@@ -697,7 +697,7 @@ function generate_MM2_Table() {
     let countwait = 0;
     let avgturnaround = 0;
     let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         avgturnaround = turnaround[i] + avgturnaround
         servicetime = servicetime + servicearray[i]
         // console.log(endtime[i])
@@ -709,7 +709,7 @@ function generate_MM2_Table() {
 
 
     }
-    avgturnaround = avgturnaround / cparray.length;
+    avgturnaround = avgturnaround / interarrival.length;
     if (avgwait == 0) {
         avgwait = 0
     }
