@@ -1563,9 +1563,31 @@ function generate_GG2_Table() {
 
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
 
-function Calculate() {
 
+
+function Calculate() {
     var queuingModel = document.getElementById("queuing-model").value;
+    const arrivalMean = parseFloat(document.getElementById('mean-arrival').value);
+    const serviceMean = parseFloat(document.getElementById('service-mean').value);
+    let simulationTime = parseInt(document.getElementById("simulation-time").value)
+
+    if (!queuingModel || !arrivalMean || !serviceMean || !simulationTime) {
+        Toastify({
+            text: "Please fill all the fields",
+            duration: 3000,
+            destination: "https://github.com/apvarun/toastify-js",
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            onClick: function(){} // Callback after click
+          }).showToast();
+          return
+    }
 
     if (queuingModel === "M/M/1") {
         generate_MM1_Table();
