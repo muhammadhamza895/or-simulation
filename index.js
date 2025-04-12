@@ -532,6 +532,7 @@ function generate_MM1_Table() {
 function generate_MM2_Table() {
     const arrivalMean = parseFloat(document.getElementById('mean-arrival').value);
     const serviceMean = parseFloat(document.getElementById('service-mean').value);
+    let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
     let cparray = []
     let cplookuparray = []
@@ -544,7 +545,10 @@ function generate_MM2_Table() {
     // For calculating the inter arrival time 
 
     interarrival[0] = 0
-    for (let i = 1; i < cparray.length; i++) {
+    let totalTime = 0
+    let interarrivalIndex = 1
+
+    while (totalTime <= simulationTime) {
         random = Math.random();
 
         if (random == 0) {
@@ -553,13 +557,33 @@ function generate_MM2_Table() {
         else {
             for (let j = 0; j < cplookuparray.length; j++) {
                 if (random > cplookuparray[j] && random < cparray[j]) {
-                    interarrival[i] = j + 1;
+                    interarrival[interarrivalIndex] = j + 1;
+                    interarrivalIndex++
+                    totalTime += j+1
                 }
 
             }
         }
-
     }
+
+    interarrival.pop()
+
+    // for (let i = 1; i < cparray.length; i++) {
+    //     random = Math.random();
+
+    //     if (random == 0) {
+    //         random = random + 0.1;
+    //     }
+    //     else {
+    //         for (let j = 0; j < cplookuparray.length; j++) {
+    //             if (random > cplookuparray[j] && random < cparray[j]) {
+    //                 interarrival[i] = j + 1;
+    //             }
+
+    //         }
+    //     }
+
+    // }
     let currentTime = 0;
     let arrivalarray = [];
     let servicearray = [];
@@ -569,7 +593,7 @@ function generate_MM2_Table() {
     let waittime = [];
     let service = 0;
     // For calculating the Arrival time and Service Time.
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         currentTime = currentTime + interarrival[i]
         arrivalarray[i] = currentTime;
         service = exponentialRandom(serviceMean);
@@ -583,6 +607,7 @@ function generate_MM2_Table() {
 
 
     const table = document.getElementById('simulation_table');
+    const cp_table = document.getElementById("cp_table");
     // let currentTime = 0;
     let previousEndTimes = [0, 0];
     let server = []
@@ -593,15 +618,30 @@ function generate_MM2_Table() {
         table.deleteRow(1);
     }
 
-    // console.log({cplookuparray, cparray, interarrival, arrivalarray, servicearray})
+    while (cp_table.rows.length > 1) {
+        cp_table.deleteRow(1);
+    }
 
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
-
-
-        const seqNumber = i + 1;
+    // CRETAING COMMULATIVE TABLE
+    for (let i= 0; i < cparray.length; i++) {
         const cumlookup = cplookuparray[i]
         const cum = cparray[i];
         const avgArrival = i;
+
+        const row = cp_table.insertRow();
+
+        row.insertCell(0).innerText = cumlookup;
+        row.insertCell(1).innerText = cum;
+        row.insertCell(2).innerText = avgArrival;
+    }
+
+    for (let i = 0; i < interarrival.length; i++) { // Simulate number of observations time slots
+
+
+        const seqNumber = i + 1;
+        // const cumlookup = cplookuparray[i]
+        // const cum = cparray[i];
+        // const avgArrival = i;
         const interArrivalRate = interarrival[i]
         currentTime = arrivalarray[i]
         serviceTime = servicearray[i];
@@ -635,20 +675,20 @@ function generate_MM2_Table() {
 
         const row = table.insertRow();
         row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
+        // row.insertCell(1).innerText = cumlookup;
+        // row.insertCell(2).innerText = cum;
+        // row.insertCell(3).innerText = avgArrival;
+        row.insertCell(1).innerText = interArrivalRate;
 
-        row.insertCell(5).innerText = roundOff(currentTime);
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTimes[serverIndex])
+        row.insertCell(2).innerText = roundOff(currentTime);
+        row.insertCell(3).innerText = roundOff(serviceTime);
+        row.insertCell(4).innerText = roundOff(startTimes[serverIndex])
         starttime[i] = roundOff(startTimes[serverIndex])
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-        row.insertCell(12).innerText = "Server " + (serverIndex + 1);
+        row.insertCell(5).innerText = roundOff(endTime);
+        row.insertCell(6).innerText = roundOff(turnaroundTime);
+        row.insertCell(7).innerText = roundOff(waitTime);
+        row.insertCell(8).innerText = roundOff(responseTime);
+        row.insertCell(9).innerText = "Server " + (serverIndex + 1);
         server[i] = serverIndex + 1;
         previousEndTimes[serverIndex] = endTime;
     }
