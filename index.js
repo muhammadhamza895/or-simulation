@@ -1571,7 +1571,7 @@ function Calculate() {
     const serviceMean = parseFloat(document.getElementById('service-mean').value);
     let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
-    if (!queuingModel || !arrivalMean || !serviceMean || !simulationTime) {
+    if (queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime) {
         Toastify({
             text: "Please fill all the fields",
             duration: 3000,
