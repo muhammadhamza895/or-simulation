@@ -680,7 +680,7 @@ function generate_MM2_Table() {
         // row.insertCell(3).innerText = avgArrival;
         row.insertCell(1).innerText = interArrivalRate;
 
-        row.insertCell(2).innerText = roundOff(currentTime);
+        row.insertCell(2).innerText = roundOff(currentTime) + ' min';
         row.insertCell(3).innerText = roundOff(serviceTime);
         row.insertCell(4).innerText = roundOff(startTimes[serverIndex])
         starttime[i] = roundOff(startTimes[serverIndex])
