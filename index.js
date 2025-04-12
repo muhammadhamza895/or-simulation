@@ -548,6 +548,8 @@ function generate_MM2_Table() {
         table.deleteRow(1);
     }
 
+    // console.log({cplookuparray, cparray, interarrival, arrivalarray, servicearray})
+
     for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
 
 
@@ -560,9 +562,14 @@ function generate_MM2_Table() {
         serviceTime = servicearray[i];
 
 
+        // const startTimes = [
+        //     Math.max(currentTime, Math.max(previousEndTimes[0], previousEndTimes[1])), currentTime
+        // ];
+
         const startTimes = [
-            Math.max(currentTime, Math.max(previousEndTimes[0], previousEndTimes[1])), currentTime
-        ];
+            Math.max(currentTime, previousEndTimes[0]) , Math.max(currentTime, previousEndTimes[1])
+        ]
+
 
         // Find the server with the minimum end time
         let serverIndex = 0;
