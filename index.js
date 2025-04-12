@@ -374,6 +374,7 @@ function generate_MM1_Table() {
 
 
     const table = document.getElementById("simulation_table");
+    const cp_table = document.getElementById("cp_table");
     let previousEndTime = 0;
 
     // Clear previous table rows
@@ -381,11 +382,29 @@ function generate_MM1_Table() {
         table.deleteRow(1);
     }
 
-    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
-        const seqNumber = i + 1;
+    while (cp_table.rows.length > 1) {
+        cp_table.deleteRow(1);
+    }
+
+    // CRETAING COMMULATIVE TABLE
+    for (let i= 0; i < cparray.length; i++) {
         const cumlookup = cplookuparray[i]
         const cum = cparray[i];
         const avgArrival = i;
+
+        const row = cp_table.insertRow();
+
+        row.insertCell(0).innerText = cumlookup;
+        row.insertCell(1).innerText = cum;
+        row.insertCell(2).innerText = avgArrival;
+    }
+
+    // CREATING DATA TABLE
+    for (let i = 0; i < cparray.length; i++) { // Simulate number of observations time slots
+        const seqNumber = i + 1;
+        // const cumlookup = cplookuparray[i]
+        // const cum = cparray[i];
+        // const avgArrival = i;
         const interArrivalRate = interarrival[i]
         currentTime = arrivalarray[i]
         const serviceTime = servicearray[i];
@@ -401,19 +420,19 @@ function generate_MM1_Table() {
 
         const row = table.insertRow();
         row.insertCell(0).innerText = seqNumber;
-        row.insertCell(1).innerText = cumlookup;
-        row.insertCell(2).innerText = cum;
-        row.insertCell(3).innerText = avgArrival;
-        row.insertCell(4).innerText = interArrivalRate;
+        // row.insertCell(1).innerText = cumlookup;
+        // row.insertCell(2).innerText = cum;
+        // row.insertCell(3).innerText = avgArrival;
+        row.insertCell(1).innerText = interArrivalRate;
 
-        row.insertCell(5).innerText = roundOff(currentTime);
-        row.insertCell(6).innerText = roundOff(serviceTime);
-        row.insertCell(7).innerText = roundOff(startTime);
-        row.insertCell(8).innerText = roundOff(endTime);
-        row.insertCell(9).innerText = roundOff(turnaroundTime);
-        row.insertCell(10).innerText = roundOff(waitTime);
-        row.insertCell(11).innerText = roundOff(responseTime);
-        row.insertCell(12).innerText = "Server 1";
+        row.insertCell(2).innerText = roundOff(currentTime);
+        row.insertCell(3).innerText = roundOff(serviceTime);
+        row.insertCell(4).innerText = roundOff(startTime);
+        row.insertCell(5).innerText = roundOff(endTime);
+        row.insertCell(6).innerText = roundOff(turnaroundTime);
+        row.insertCell(7).innerText = roundOff(waitTime);
+        row.insertCell(8).innerText = roundOff(responseTime);
+        row.insertCell(9).innerText = "Server 1";
         previousEndTime = endTime;
     }
 
