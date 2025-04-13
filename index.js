@@ -467,7 +467,7 @@ function generate_MM1_Table() {
     let countwait = 0;
     let avgturnaround = 0;
     let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         avgturnaround = turnaround[i] + avgturnaround
         servicetime = servicetime + servicearray[i]
         // console.log(avgturnaround)
@@ -479,7 +479,7 @@ function generate_MM1_Table() {
 
 
     }
-    avgturnaround = avgturnaround / cparray.length;
+    avgturnaround = avgturnaround / interarrival.length;
     if (avgwait == 0) {
         avgwait = 0
     }
@@ -697,7 +697,7 @@ function generate_MM2_Table() {
     let countwait = 0;
     let avgturnaround = 0;
     let servicetime = 0
-    for (let i = 0; i < cparray.length; i++) {
+    for (let i = 0; i < interarrival.length; i++) {
         avgturnaround = turnaround[i] + avgturnaround
         servicetime = servicetime + servicearray[i]
         // console.log(endtime[i])
@@ -709,7 +709,7 @@ function generate_MM2_Table() {
 
 
     }
-    avgturnaround = avgturnaround / cparray.length;
+    avgturnaround = avgturnaround / interarrival.length;
     if (avgwait == 0) {
         avgwait = 0
     }
@@ -926,6 +926,40 @@ const generate_MM3_Table=()=>{
         previousEndTimes[serverIndex] = endTime;
     }
 
+    // For Average Wait time and turn Around time .
+    let avgwait = 0;
+    let countwait = 0;
+    let avgturnaround = 0;
+    let servicetime = 0
+    for (let i = 0; i < interarrival.length; i++) {
+        avgturnaround = turnaround[i] + avgturnaround
+        servicetime = servicetime + servicearray[i]
+        // console.log(endtime[i])
+        if (waittime[i] != 0) {
+            avgwait = waittime[i] + avgwait;
+            countwait = countwait + 1
+
+        }
+
+
+    }
+    avgturnaround = avgturnaround / interarrival.length;
+    if (avgwait == 0) {
+        avgwait = 0
+    }
+    else {
+        avgwait = avgwait / (countwait);
+
+    }
+    console.log(avgturnaround + "   " + avgwait)
+
+    document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    const avgTA = document.getElementById("avg-turnaround");
+    const avgWT = document.getElementById("avg-wait");
+
+    avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
+    avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
+
     function exponentialRandom(mean) {
         let value = -Math.log(1 - Math.random()) * mean;
         return value >= 0 ? value : 0;
@@ -1086,6 +1120,40 @@ const generate_MM4_Table=()=>{
         server[i] = serverIndex + 1;
         previousEndTimes[serverIndex] = endTime;
     }
+
+    // For Average Wait time and turn Around time .
+    let avgwait = 0;
+    let countwait = 0;
+    let avgturnaround = 0;
+    let servicetime = 0
+    for (let i = 0; i < interarrival.length; i++) {
+        avgturnaround = turnaround[i] + avgturnaround
+        servicetime = servicetime + servicearray[i]
+        // console.log(endtime[i])
+        if (waittime[i] != 0) {
+            avgwait = waittime[i] + avgwait;
+            countwait = countwait + 1
+
+        }
+
+
+    }
+    avgturnaround = avgturnaround / interarrival.length;
+    if (avgwait == 0) {
+        avgwait = 0
+    }
+    else {
+        avgwait = avgwait / (countwait);
+
+    }
+    console.log(avgturnaround + "   " + avgwait)
+
+    document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    const avgTA = document.getElementById("avg-turnaround");
+    const avgWT = document.getElementById("avg-wait");
+
+    avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
+    avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
     function exponentialRandom(mean) {
         let value = -Math.log(1 - Math.random()) * mean;
