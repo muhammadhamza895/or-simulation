@@ -276,6 +276,15 @@ const generateTurnAroundTimeChart = (turnAroundTimes) => {
     }
 }
 
+function exponentialRandom(mean) {
+    let value = -Math.log(1 - Math.random()) * mean;
+    return value >= 0 ? value : 0;
+}
+
+function roundOff(value) {
+    return Math.round(value);
+}
+
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
 function generate_MM1_Table() {
 
@@ -513,13 +522,13 @@ function generate_MM1_Table() {
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
-    function exponentialRandom(mean) {
-        return -Math.log(1 - Math.random()) * mean;
-    }
+    // function exponentialRandom(mean) {
+    //     return -Math.log(1 - Math.random()) * mean;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
     // generateArrivalChart(arrivalarray)
@@ -768,14 +777,14 @@ function generate_MM2_Table() {
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
@@ -960,14 +969,14 @@ const generate_MM3_Table=()=>{
     avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
@@ -1155,14 +1164,14 @@ const generate_MM4_Table=()=>{
     avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
@@ -1196,6 +1205,19 @@ const errorFunctions = (errorType) => {
     else showToast();
 };
 
+const simulationFunctionsObj = {
+    "M/M/1" : ()=> generate_MM1_Table(),
+    "M/M/2" : ()=> generate_MM2_Table(),
+    "M/M/3" : ()=> generate_MM3_Table(),
+    "M/M/4" : ()=> generate_MM4_Table()
+}
+
+const sumulationFuntions =(simulationType)=>{
+    const func = simulationFunctionsObj[simulationType]
+    if (func) func();
+    else showToast();
+}
+
 
 function Calculate() {
     var queuingModel = document.getElementById("queuing-model").value;
@@ -1207,27 +1229,7 @@ function Calculate() {
     const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 ? 'invalidInputs' : ''
     const errorCondition = missingInputsCondition || invalidInputCondition
 
-    if (errorCondition) {
-        errorFunctions(errorCondition)
-        return
-    }
+    if (errorCondition) return errorFunctions(errorCondition);
 
-    if (queuingModel === "M/M/1") {
-        generate_MM1_Table();
-    }
-
-    if (queuingModel === "M/M/2") {
-        generate_MM2_Table();
-
-    }
-
-    if (queuingModel === "M/M/3") {
-        generate_MM3_Table();
-
-    }
-
-    if (queuingModel === "M/M/4") {
-        generate_MM4_Table();
-
-    }
+    sumulationFuntions(queuingModel)
 }
