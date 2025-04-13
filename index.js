@@ -1220,10 +1220,7 @@ function Calculate() {
     const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 ? 'invalidInputs' : ''
     const errorCondition = missingInputsCondition || invalidInputCondition
 
-    if (errorCondition) {
-        errorFunctions(errorCondition)
-        return
-    }
+    if (errorCondition) return errorFunctions(errorCondition);
 
     sumulationFuntions(queuingModel)
 }
