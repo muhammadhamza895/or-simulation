@@ -1196,6 +1196,19 @@ const errorFunctions = (errorType) => {
     else showToast();
 };
 
+const simulationFunctionsObj = {
+    "M/M/1" : ()=> generate_MM1_Table(),
+    "M/M/2" : ()=> generate_MM2_Table(),
+    "M/M/3" : ()=> generate_MM3_Table(),
+    "M/M/4" : ()=> generate_MM4_Table()
+}
+
+const sumulationFuntions =(simulationType)=>{
+    const func = simulationFunctionsObj[simulationType]
+    if (func) func();
+    else showToast();
+}
+
 
 function Calculate() {
     var queuingModel = document.getElementById("queuing-model").value;
@@ -1212,22 +1225,5 @@ function Calculate() {
         return
     }
 
-    if (queuingModel === "M/M/1") {
-        generate_MM1_Table();
-    }
-
-    if (queuingModel === "M/M/2") {
-        generate_MM2_Table();
-
-    }
-
-    if (queuingModel === "M/M/3") {
-        generate_MM3_Table();
-
-    }
-
-    if (queuingModel === "M/M/4") {
-        generate_MM4_Table();
-
-    }
+    sumulationFuntions(queuingModel)
 }
