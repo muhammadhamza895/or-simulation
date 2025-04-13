@@ -1168,7 +1168,33 @@ const generate_MM4_Table=()=>{
 }
 
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
+const showToast=(msg = '')=>{
+    Toastify({
+        text: msg || "Invalid Error Occured",
+        duration: 3000,
+        destination: "https://github.com/apvarun/toastify-js",
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+}
 
+const errorFunctionsObj = {
+    'missingInputs': () => showToast('Please Fill All The Fields'),
+    'invalidInputs': () => showToast('Invalid Inputs'),
+};
+
+const errorFunctions = (errorType) => {
+    const func = errorFunctionsObj[errorType];
+    if (func) func();
+    else showToast();
+};
 
 
 function Calculate() {
@@ -1177,22 +1203,13 @@ function Calculate() {
     const serviceMean = parseFloat(document.getElementById('service-mean').value);
     let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
-    if (queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime) {
-        Toastify({
-            text: "Please fill all the fields",
-            duration: 3000,
-            destination: "https://github.com/apvarun/toastify-js",
-            newWindow: true,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-            onClick: function(){} // Callback after click
-          }).showToast();
-          return
+    const missingInputsCondition = queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime ? 'missingInputs' : ''
+    const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 ? 'invalidInputs' : ''
+    const errorCondition = missingInputsCondition || invalidInputCondition
+
+    if (errorCondition) {
+        errorFunctions(errorCondition)
+        return
     }
 
     if (queuingModel === "M/M/1") {
