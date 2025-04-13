@@ -276,6 +276,15 @@ const generateTurnAroundTimeChart = (turnAroundTimes) => {
     }
 }
 
+function exponentialRandom(mean) {
+    let value = -Math.log(1 - Math.random()) * mean;
+    return value >= 0 ? value : 0;
+}
+
+function roundOff(value) {
+    return Math.round(value);
+}
+
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
 function generate_MM1_Table() {
 
@@ -513,13 +522,13 @@ function generate_MM1_Table() {
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
-    function exponentialRandom(mean) {
-        return -Math.log(1 - Math.random()) * mean;
-    }
+    // function exponentialRandom(mean) {
+    //     return -Math.log(1 - Math.random()) * mean;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
     // generateArrivalChart(arrivalarray)
@@ -768,14 +777,14 @@ function generate_MM2_Table() {
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
@@ -960,14 +969,14 @@ const generate_MM3_Table=()=>{
     avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
@@ -1155,14 +1164,14 @@ const generate_MM4_Table=()=>{
     avgTA.innerHTML = avgturnaround.toFixed(2)+ ' min';
     avgWT.innerHTML = avgwait.toFixed(2)+ ' min';
 
-    function exponentialRandom(mean) {
-        let value = -Math.log(1 - Math.random()) * mean;
-        return value >= 0 ? value : 0;
-    }
+    // function exponentialRandom(mean) {
+    //     let value = -Math.log(1 - Math.random()) * mean;
+    //     return value >= 0 ? value : 0;
+    // }
 
-    function roundOff(value) {
-        return Math.round(value);
-    }
+    // function roundOff(value) {
+    //     return Math.round(value);
+    // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
 }
