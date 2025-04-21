@@ -168,11 +168,22 @@ td {
 .cards-container {
     display: none;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
     gap: 5px;
     align-items: stretch;
 }
 
 .kpi {
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #fafafa;
+}
+
+.calculate-params-container {
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    background-color: red;
+    margin-bottom: 5px;
+    border-radius: 0.25rem;
 }
