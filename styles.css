@@ -180,6 +180,7 @@ td {
 }
 
 .calculate-params-container {
+    display: none;
     height: 100%;
     width: 100%;
     flex-grow: 1;
@@ -187,7 +188,7 @@ td {
     margin-bottom: 5px;
     border-radius: 0.25rem;
     padding: 40px 20px;
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     justify-content: space-evenly;
 }

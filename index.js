@@ -522,6 +522,7 @@ function generate_MM1_Table() {
     let serverutil = idle / check;
     console.log("serverutil" + serverutil)
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
 
     // const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
