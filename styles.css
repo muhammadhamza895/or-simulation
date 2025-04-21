@@ -183,7 +183,17 @@ td {
     height: 100%;
     width: 100%;
     flex-grow: 1;
-    background-color: red;
+    background-color: #d1f2eb;
     margin-bottom: 5px;
     border-radius: 0.25rem;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.params-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
