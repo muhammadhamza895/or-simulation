@@ -285,6 +285,17 @@ function roundOff(value) {
     return Math.round(value);
 }
 
+const generate_MM1_params=(lambda, miu)=>{
+    const serverUtilization = lambda/miu
+
+    const lq = (serverUtilization**2) / (1 - serverUtilization)
+    const wq = lq / lambda
+    const ws = wq - (1/miu)
+    const ls = lambda * ws
+
+    return [serverUtilization, lq,wq, ws,ls]
+}
+
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
 function generate_MM1_Table() {
 
@@ -531,6 +542,7 @@ function generate_MM1_Table() {
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    console.log(generate_MM1_params(arrivalMean, serviceMean))
     // generateArrivalChart(arrivalarray)
     // generateServiceTimeChart(servicearray)
     // generateTurnAroundTimeChart(turnaround)
