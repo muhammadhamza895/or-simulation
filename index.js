@@ -344,10 +344,10 @@ const renderParams=(serverUtilization, lq,wq, ws,ls)=>{
     wsElem = document.getElementById('ws')
     lsElem = document.getElementById('ls')
 
-    lqElem.innerHTML = lq.toFixed(2)
+    lqElem.innerHTML = lq.toFixed(3)
     wqElem.innerHTML = wq.toFixed(2) + ' min'
     wsElem.innerHTML = ws.toFixed(2) + ' min'
-    lsElem.innerHTML = ls.toFixed(2)
+    lsElem.innerHTML = ls.toFixed(3)
 }
 
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
