@@ -286,14 +286,28 @@ function roundOff(value) {
 }
 
 const generate_MM1_params=(lambda, miu)=>{
-    const serverUtilization = lambda/miu
+    const serverUtilization = lambda  / miu
 
-    const lq = (serverUtilization**2) / (1 - serverUtilization)
+    const lq = (serverUtilization**2) / (1 - serverUtilization) 
     const wq = lq / lambda
-    const ws = wq - (1/miu)
+    const ws = wq + (1/miu)
     const ls = lambda * ws
 
-    return [serverUtilization, lq,wq, ws,ls]
+    console.log({serverUtilization, lq, wq, ws, ls})
+
+    renderParams(serverUtilization, lq,wq, ws,ls)
+}
+
+const renderParams=(serverUtilization, lq,wq, ws,ls)=>{
+    lqElem = document.getElementById('lq')
+    wqElem = document.getElementById('wq')
+    wsElem = document.getElementById('ws')
+    lsElem = document.getElementById('ls')
+
+    lqElem.innerHTML = lq.toFixed(1)
+    wqElem.innerHTML = wq.toFixed(2) + ' min'
+    wsElem.innerHTML = ws.toFixed(2) + ' min'
+    lsElem.innerHTML = ls.toFixed(1)
 }
 
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
@@ -543,7 +557,7 @@ function generate_MM1_Table() {
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
-    console.log(generate_MM1_params(arrivalMean, serviceMean))
+    console.log(generate_MM1_params(1/arrivalMean, 1/serviceMean))
     // generateArrivalChart(arrivalarray)
     // generateServiceTimeChart(servicearray)
     // generateTurnAroundTimeChart(turnaround)
