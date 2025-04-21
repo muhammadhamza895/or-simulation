@@ -1224,6 +1224,7 @@ const showToast=(msg = '')=>{
 const errorFunctionsObj = {
     'missingInputs': () => showToast('Please Fill All The Fields'),
     'invalidInputs': () => showToast('Invalid Inputs'),
+    'invalidSimulation' : ()=>showToast('Invalid Server Utilization Time (P)')
 };
 
 const errorFunctions = (errorType) => {
@@ -1256,8 +1257,9 @@ function Calculate() {
     invalidSimulation = (1/ arrivalMean) / (server * (1/ serviceMean)) <  0 || (1/ arrivalMean) / (server * (1/ serviceMean)) >= 1 ? true : false
     
     const missingInputsCondition = queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime ? 'missingInputs' : ''
-    const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 || invalidSimulation ? 'invalidInputs' : ''
-    const errorCondition = missingInputsCondition || invalidInputCondition
+    const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0  ? 'invalidInputs' : ''
+    const invalidSimulationCondition = invalidSimulation ? 'invalidSimulation' : ''
+    const errorCondition = missingInputsCondition || invalidInputCondition || invalidSimulationCondition
 
     if (errorCondition) return errorFunctions(errorCondition);
 
