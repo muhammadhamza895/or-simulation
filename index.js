@@ -1032,6 +1032,7 @@ const generate_MM3_Table=()=>{
     console.log(avgturnaround + "   " + avgwait)
 
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
 
@@ -1048,6 +1049,7 @@ const generate_MM3_Table=()=>{
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    generateMultiServerParams(1/arrivalMean, 1/serviceMean, 3)
 }
 
 // ------------------------------------ M / M / 4 MODEL  ---------------------------------------------- //
