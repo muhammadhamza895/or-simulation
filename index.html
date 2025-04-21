@@ -151,17 +151,38 @@
         <div id="linechart"></div>
         <div id="linechart-service"></div>
         <div id="linechart-turnAround"></div>
-        <div class="cards-container">
-            <div class="card kpi">
-                <div class="card-body text-center justify-content-center d-flex flex-column">
-                    <h5 class="card-title">Average Turn around time</h5>
-                    <p id="avg-turnaround" class="card-text"></p>
+        <div style="display: flex; flex-direction: column;">
+            <div class="calculate-params-container">
+                <div class="params-text">
+                    <h5 style="margin-bottom: 0;" class="card-title">Number of customers in the queue (LQ) : </h5>
+                    <p id="lq" class="card-text" style="color: crimson;"></p>
+                </div>
+                <div class="params-text">
+                    <h5 style="margin-bottom: 0;" class="card-title">Avg Waiting Time (Queue) : </h5>
+                    <p id="wq" class="card-text" style="color: crimson;"></p>
+                </div>
+                <div class="params-text">
+                    <h5 style="margin-bottom: 0;" class="card-title">Avg Waiting Time (system) : </h5>
+                    <p id="ws" class="card-text" style="color: crimson;"></p>
+                </div>
+                <div class="params-text">
+                    <h5 style="margin-bottom: 0;" class="card-title">Average number of customers (L) </h5>
+                    <p id="ls" class="card-text" style="color: crimson;"></p>
                 </div>
             </div>
-            <div class="card kpi">
-                <div class="card-body text-center justify-content-center d-flex flex-column">
-                    <h5 class="card-title">Average Wait time</h5>
-                    <p id="avg-wait" class="card-text"></p>
+
+            <div class="cards-container">
+                <div class="card kpi">
+                    <div class="card-body text-center justify-content-center d-flex flex-column">
+                        <h5 class="card-title">Average Turn around time</h5>
+                        <p id="avg-turnaround" class="card-text"></p>
+                    </div>
+                </div>
+                <div class="card kpi">
+                    <div class="card-body text-center justify-content-center d-flex flex-column">
+                        <h5 class="card-title">Average Wait time</h5>
+                        <p id="avg-wait" class="card-text"></p>
+                    </div>
                 </div>
             </div>
         </div>

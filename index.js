@@ -285,6 +285,71 @@ function roundOff(value) {
     return Math.round(value);
 }
 
+const generate_MM1_params=(lambda, miu)=>{
+    const serverUtilization = lambda  / miu
+
+    const lq = (serverUtilization**2) / (1 - serverUtilization) 
+    const wq = lq / lambda
+    const ws = wq + (1/miu)
+    const ls = lambda * ws
+
+    console.log({serverUtilization, lq, wq, ws, ls})
+
+    renderParams(serverUtilization, lq,wq, ws,ls)
+}
+
+function factorial(n) {
+    if (n === 0 || n === 1) {
+        return 1;
+    }
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+function calculateMultiServerLq(lambda, mu, c) {
+    let sum = 0;
+    
+    for (let n = 0; n < c; n++) {
+        sum += Math.pow(lambda / mu, n) / factorial(n);
+    }
+
+    sum += Math.pow(lambda / mu, c) / (factorial(c) * (1 - (lambda / (c * mu))));
+
+    const P0 = 1 / sum;
+
+    const rho = lambda / (c * mu); 
+    console.log({rho, P0})
+    const Lq = ( P0 * Math.pow(lambda / mu, c) * rho ) / (factorial(c) * Math.pow(1 - rho, 2));
+
+    return Lq;
+}
+
+const generateMultiServerParams=(lambda, miu, c)=>{
+    const lq = calculateMultiServerLq(lambda, miu, c)
+    const wq = lq / lambda
+    const ws = wq + (1/miu)
+    const ls = lambda * ws
+
+    console.log({lambda, miu, c})
+    console.log({lq, wq, ws, ls})
+    renderParams('', lq,wq, ws,ls)
+}
+
+const renderParams=(serverUtilization, lq,wq, ws,ls)=>{
+    lqElem = document.getElementById('lq')
+    wqElem = document.getElementById('wq')
+    wsElem = document.getElementById('ws')
+    lsElem = document.getElementById('ls')
+
+    lqElem.innerHTML = lq.toFixed(3)
+    wqElem.innerHTML = wq.toFixed(2) + ' min'
+    wsElem.innerHTML = ws.toFixed(2) + ' min'
+    lsElem.innerHTML = ls.toFixed(3)
+}
+
 // -------------------------------------- M / M / 1 MODEL  ---------------------------------------------- // 
 function generate_MM1_Table() {
 
@@ -511,6 +576,7 @@ function generate_MM1_Table() {
     let serverutil = idle / check;
     console.log("serverutil" + serverutil)
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
 
     // const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
@@ -531,6 +597,7 @@ function generate_MM1_Table() {
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    console.log(generate_MM1_params(1/arrivalMean, 1/serviceMean))
     // generateArrivalChart(arrivalarray)
     // generateServiceTimeChart(servicearray)
     // generateTurnAroundTimeChart(turnaround)
@@ -767,6 +834,7 @@ function generate_MM2_Table() {
     // console.log(serverutilization)
 
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
     // const serverUtilization = document.getElementById("server-utlization");
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
@@ -787,6 +855,7 @@ function generate_MM2_Table() {
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    generateMultiServerParams(1/arrivalMean, 1/serviceMean, 2)
 }
 
 // ------------------------------------ M / M / 3 MODEL  ---------------------------------------------- //
@@ -963,6 +1032,7 @@ const generate_MM3_Table=()=>{
     console.log(avgturnaround + "   " + avgwait)
 
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
 
@@ -979,6 +1049,7 @@ const generate_MM3_Table=()=>{
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    generateMultiServerParams(1/arrivalMean, 1/serviceMean, 3)
 }
 
 // ------------------------------------ M / M / 4 MODEL  ---------------------------------------------- //
@@ -1158,6 +1229,7 @@ const generate_MM4_Table=()=>{
     console.log(avgturnaround + "   " + avgwait)
 
     document.getElementsByClassName("cards-container")[0].style.display = 'grid';
+    document.getElementsByClassName("calculate-params-container")[0].style.display = 'flex';
     const avgTA = document.getElementById("avg-turnaround");
     const avgWT = document.getElementById("avg-wait");
 
@@ -1174,6 +1246,7 @@ const generate_MM4_Table=()=>{
     // }
 
     generateGraphs({arrival : arrivalarray, service: servicearray, turnAround: turnaround})
+    generateMultiServerParams(1/arrivalMean, 1/serviceMean, 4)
 }
 
 // ------------------------------ Calculate Button  ------------------------------------------------ // 
@@ -1197,6 +1270,7 @@ const showToast=(msg = '')=>{
 const errorFunctionsObj = {
     'missingInputs': () => showToast('Please Fill All The Fields'),
     'invalidInputs': () => showToast('Invalid Inputs'),
+    'invalidSimulation' : ()=>showToast('Invalid Server Utilization Time (P)')
 };
 
 const errorFunctions = (errorType) => {
@@ -1225,9 +1299,13 @@ function Calculate() {
     const serviceMean = parseFloat(document.getElementById('service-mean').value);
     let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
+    const server = queuingModel.split('/')[2]
+    invalidSimulation = (1/ arrivalMean) / (server * (1/ serviceMean)) <  0 || (1/ arrivalMean) / (server * (1/ serviceMean)) >= 1 ? true : false
+    
     const missingInputsCondition = queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime ? 'missingInputs' : ''
-    const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 ? 'invalidInputs' : ''
-    const errorCondition = missingInputsCondition || invalidInputCondition
+    const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0  ? 'invalidInputs' : ''
+    const invalidSimulationCondition = invalidSimulation ? 'invalidSimulation' : ''
+    const errorCondition = missingInputsCondition || invalidInputCondition || invalidSimulationCondition
 
     if (errorCondition) return errorFunctions(errorCondition);
 
