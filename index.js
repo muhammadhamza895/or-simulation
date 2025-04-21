@@ -1253,8 +1253,8 @@ function Calculate() {
     let simulationTime = parseInt(document.getElementById("simulation-time").value)
 
     const server = queuingModel.split('/')[2]
-    invalidSimulation = (1/ arrivalMean) / (server * (1/ serviceMean)) <  0 || (1/ arrivalMean) / (server * (1/ serviceMean)) > 1 ? true : false
-
+    invalidSimulation = (1/ arrivalMean) / (server * (1/ serviceMean)) <  0 || (1/ arrivalMean) / (server * (1/ serviceMean)) >= 1 ? true : false
+    
     const missingInputsCondition = queuingModel == 'None' || !arrivalMean || !serviceMean || !simulationTime ? 'missingInputs' : ''
     const invalidInputCondition = arrivalMean < 0 || serviceMean < 0 || simulationTime < 0 || invalidSimulation ? 'invalidInputs' : ''
     const errorCondition = missingInputsCondition || invalidInputCondition
